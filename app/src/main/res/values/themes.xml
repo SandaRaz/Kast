@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Kast" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- Couleur primaire -->
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryVariant">@color/lighter_green</item>
+        <item name="colorOnPrimary">@color/dark_grey</item>
+
+        <!-- Couleur secondaire -->
+        <item name="colorSecondary">@color/darker</item>
+        <item name="colorSecondaryVariant">@color/dark_grey</item>
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
+
+    <style name="Theme.Kast" parent="Base.Theme.Kast" />
+</resources>
