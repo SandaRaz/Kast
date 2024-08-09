@@ -210,6 +210,13 @@ fun MenuScreen(
             ) {
                 MenuItem(
                     icon = Icons.Outlined.PersonOutline,
+                    label = "Login",
+                    onClick = {
+                        navController.navigate("login")
+                    }
+                )
+                MenuItem(
+                    icon = Icons.Outlined.PersonOutline,
                     label = "Edit profile"
                 )
                 MenuItem(

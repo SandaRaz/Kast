@@ -53,6 +53,9 @@ fun AppNavigation(
             val id = backStackEntry.arguments?.getString("id")
             // Screen(id)
         }
+        composable("login") {
+            LoginScreen(navController)
+        }
     }
 }
 
