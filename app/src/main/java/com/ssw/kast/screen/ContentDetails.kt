@@ -17,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ssw.kast.component.BottomNavigationBar
+import com.ssw.kast.component.SelectedItemManagement
+import com.ssw.kast.component.TitleBar
 import com.ssw.kast.ui.theme.KastTheme
 
 @Composable

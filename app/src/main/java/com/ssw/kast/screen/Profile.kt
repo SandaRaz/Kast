@@ -4,12 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,13 +34,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ssw.kast.R
+import com.ssw.kast.component.BottomNavigationBar
+import com.ssw.kast.component.SelectedItemManagement
 import com.ssw.kast.model.Country
 import com.ssw.kast.model.Gender
 import com.ssw.kast.model.User
 import com.ssw.kast.model.getImageFromResources
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
-import java.util.Date
+import org.threeten.bp.LocalDate
 
 @Composable
 fun ProfileScreen (
@@ -76,12 +76,12 @@ fun ProfileScreen (
                 username = "sanda_raz",
                 usermail = "sr@gmail.com",
                 passwordHash = "",
-                dateOfBirth = Date(2000,1,1),
+                dateOfBirth = LocalDate.of(2000,1,1),
                 profilePicture = image1,
                 biography = "carpe diem",
                 followersCount = 10,
                 followingCount = 3,
-                createdAt = Date(),
+                createdAt = LocalDate.now(),
                 gender = gender1,
                 country = country1
             )

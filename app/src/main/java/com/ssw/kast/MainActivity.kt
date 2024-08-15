@@ -11,6 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
+import com.jakewharton.threetenabp.AndroidThreeTen
+import com.ssw.kast.model.persistence.PreferencesManager
 import com.ssw.kast.screen.AppNavigation
 import com.ssw.kast.screen.BottomNavigationBar
 import com.ssw.kast.screen.SelectedItemManagement
@@ -20,6 +22,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidThreeTen.init(this)
         enableEdgeToEdge()
         setContent {
             KastTheme {
@@ -32,7 +35,9 @@ class MainActivity : ComponentActivity() {
                     BottomNavigationBar(navController, selectedItem)
                 }
 
-                AppNavigation(navController, selectedItem, bottomNavigationBar)
+                val preferencesManager = remember { PreferencesManager(this.applicationContext) }
+
+                AppNavigation(navController, selectedItem, bottomNavigationBar, preferencesManager)
             }
         }
     }

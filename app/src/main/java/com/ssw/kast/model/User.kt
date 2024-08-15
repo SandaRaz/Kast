@@ -1,34 +1,34 @@
 package com.ssw.kast.model
 
-import android.text.format.DateUtils
 import androidx.compose.ui.graphics.ImageBitmap
-import java.util.Date
+import org.threeten.bp.LocalDate
 
 class User {
     lateinit var id: Any
     var username: String
     var usermail: String
     lateinit var passwordHash: String
-    lateinit var dateOfBirth: Date
+    lateinit var dateOfBirth: LocalDate
     var profilePicture: ImageBitmap
     var biography: String = ""
     var followersCount: Int = 0
     var followingCount: Int = 0
-    var createdAt: Date = Date()
+    var createdAt: LocalDate = LocalDate.now()
     lateinit var gender: Gender
     lateinit var country: Country
+    lateinit var userMusicGenres: List<MusicGenre>
 
     constructor(
         id: Any,
         username: String,
         usermail: String,
         passwordHash: String,
-        dateOfBirth: Date,
+        dateOfBirth: LocalDate,
         profilePicture: ImageBitmap,
         biography: String,
         followersCount: Int,
         followingCount: Int,
-        createdAt: Date,
+        createdAt: LocalDate,
         gender: Gender,
         country: Country
     ) {

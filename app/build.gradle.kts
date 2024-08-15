@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(files("E:\\Sanda\\ITU\\KotlinApps\\Kast\\lib\\gson-2.8.2.jar"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,19 +74,27 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // ------------------ Android JETPACK ------------------
     // ------- SETUP ROOM DATABASE -------
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
     ksp("androidx.room:room-compiler:2.5.2")
-    // -----------------------------------
+
+    // ----------- Navigation ------------
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // --------- Jetpack Compose ---------
     implementation("androidx.compose.material3:material3:1.2.1")
     implementation("androidx.compose.material:material-icons-core:1.6.8")
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("com.google.accompanist:accompanist-flowlayout:0.24.3-alpha")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
+    // --------- SharedPreferences ---------
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // ----- DateTimeFormatter API < 26 -----
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
 
     /*
     implementation("androidx.compose.ui:ui:1.6.7")

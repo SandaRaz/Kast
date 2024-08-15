@@ -1,6 +1,5 @@
 package com.ssw.kast.screen
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,21 +20,16 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicVideo
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,23 +40,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ssw.kast.R
+import com.ssw.kast.component.BottomNavigationBar
+import com.ssw.kast.component.SearchBar
+import com.ssw.kast.component.SelectedItemManagement
 import com.ssw.kast.model.component.SearchResultModel
 import com.ssw.kast.model.getImageFromResources
-import com.ssw.kast.ui.theme.Darker
 import com.ssw.kast.ui.theme.Grey
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
@@ -142,112 +135,6 @@ fun SearchScreen(
                 searchResults = userResult,
                 resultTypeIcon = Icons.Filled.Person,
                 navController = navController
-            )
-        }
-    }
-}
-
-@SuppressLint("PrivateResource")
-@Composable
-fun SearchBar(
-    modifier: Modifier = Modifier,
-    searchValue: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
-    onPrevious: () -> Unit = {},
-    onSearch: () -> Unit = {}
-) {
-    val cornerShape: Dp = 16.dp
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(cornerShape)
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(cornerShape)
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Image(
-            painter = painterResource(id = com.google.android.material.R.drawable.material_ic_keyboard_arrow_previous_black_24dp),
-            contentDescription = "previous",
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary),
-            modifier = Modifier
-                .size(44.dp)
-                .clickable { onPrevious() }
-                .padding(horizontal = 8.dp)
-        )
-        Row(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Transparent,
-                    shape = RoundedCornerShape(topEnd = cornerShape, bottomEnd = cornerShape)
-                )
-                .background(
-                    color = Color.White.copy(alpha = 0.05f),
-                    shape = RoundedCornerShape(topEnd = cornerShape, bottomEnd = cornerShape)
-                ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            TextField(
-                value = searchValue,
-                onValueChange = onValueChange,
-                placeholder = {
-                    Text("Search...")
-                },
-                singleLine = true,
-                colors = TextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.tertiary,
-                    unfocusedTextColor = LightGrey,
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                trailingIcon = {
-                    if(searchValue.text.isNotBlank()){
-                        Icon(
-                            imageVector = Icons.Rounded.Cancel,
-                            contentDescription = null,
-                            tint = Darker,
-                            modifier = Modifier
-                                .clickable {
-                                    onValueChange(TextFieldValue(""))
-                                }
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .fillMaxHeight()
-            )
-            Icon(
-                imageVector = Icons.Outlined.Search,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier
-                    .border(
-                        width = 1.dp,
-                        color = Color.Transparent,
-                        shape = CircleShape
-                    )
-                    .size(44.dp)
-                    .background(
-                        color = Color.Transparent,
-                        shape = CircleShape
-                    )
-                    .clickable {
-                        onSearch()
-                    }
-                    .padding(horizontal = 8.dp)
             )
         }
     }
