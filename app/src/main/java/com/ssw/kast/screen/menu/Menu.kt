@@ -1,4 +1,4 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.menu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,8 +48,8 @@ import com.ssw.kast.R
 import com.ssw.kast.component.BottomNavigationBar
 import com.ssw.kast.component.MenuItem
 import com.ssw.kast.component.SelectedItemManagement
-import com.ssw.kast.model.User
-import com.ssw.kast.model.getImageFromResources
+import com.ssw.kast.model.entity.User
+import com.ssw.kast.model.entity.getImageFromResources
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
 
@@ -241,7 +241,7 @@ fun MenuScreenPreview() {
     KastTheme {
         val navController = rememberNavController()
 
-        val selectedItemName by remember { mutableStateOf("search") }
+        val selectedItemName by remember { mutableStateOf("menu") }
         val selectedItem = SelectedItemManagement(selectedItemName)
 
         val bottomNavigationBar: @Composable () -> Unit = {

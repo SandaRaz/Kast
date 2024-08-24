@@ -1,4 +1,4 @@
-package com.ssw.kast.model
+package com.ssw.kast.model.entity
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

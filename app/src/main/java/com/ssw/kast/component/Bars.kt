@@ -8,13 +8,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MusicNote
@@ -38,9 +42,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -53,6 +59,67 @@ import com.ssw.kast.ui.theme.LightGrey
 class SelectedItemManagement(var itemName: String) {
     var onSelectItem: (String) -> Unit = { item ->
         itemName = item
+    }
+}
+
+@Composable
+fun BackNavBar(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    titleSize: TextUnit = 22.sp,
+    iconColor: Color = MaterialTheme.colorScheme.primary,
+    onPressBackButton: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .border(
+                1.dp,
+                Color.Transparent
+            )
+            .padding(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.ChevronLeft,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .border(
+                    1.dp,
+                    Color.Transparent
+                )
+                .clickable {
+                    onPressBackButton()
+                },
+            tint = iconColor
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    1.dp,
+                    Color.Transparent
+                ),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title ?: "",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = titleSize,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BackNavBarPreview() {
+    KastTheme {
+        BackNavBar(title = "player")
     }
 }
 
@@ -131,7 +198,7 @@ fun BottomNavigationBar(navController: NavHostController, selectedItem: Selected
                 selected = selectedItem.itemName == "music",
                 onClick = {
                     selectedItem.onSelectItem("music")
-//                    navController.navigate("music")
+                    navController.navigate("music")
                 },
                 icon = {
                     Icon(

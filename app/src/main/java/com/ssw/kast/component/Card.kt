@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,10 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,12 +32,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ssw.kast.ui.theme.Darker
 import com.ssw.kast.ui.theme.Grey
 import com.ssw.kast.ui.theme.LightGrey
@@ -62,8 +70,8 @@ fun MusicCard(
                 color = Darker,
                 shape = RoundedCornerShape(cornerRound)
             )
-            .clickable { onClick() }
             .padding(0.dp)
+            .clickable { onClick() }
     ) {
         Image(
             painter = BitmapPainter(image),
@@ -124,12 +132,103 @@ fun MusicCard(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SimpleCard(
+    modifier: Modifier = Modifier,
+    label: String,
+    labelColor: Color = MaterialTheme.colorScheme.tertiary,
+    description: String?,
+    descriptionColor: Color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+    icon: ImageVector? = null,
+    iconTint: Color = MaterialTheme.colorScheme.tertiary,
+    shape: Shape = RectangleShape,
+    onClick: () -> Unit = {}
+) {
+    Row (
+        modifier = modifier
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = shape
+            )
+            .clickable {
+                onClick()
+            }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "Card icon",
+                tint = iconTint,
+                modifier = Modifier
+                    .size(32.dp)
+                    .border(
+                        1.dp,
+                        Color.Transparent
+                    )
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .width(16.dp)
+                    .fillMaxHeight()
+                    .background(color = Color.Transparent)
+            )
+        }
+
+        Column (
+            modifier = Modifier
+                .border(
+                    1.dp,
+                    Color.Transparent
+                )
+                .padding(vertical = 16.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = label,
+                color = labelColor,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .basicMarquee(iterations = Int.MAX_VALUE)
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(0.dp)
+                    .background(color = Color.Transparent)
+            )
+
+            if (description != null) {
+                Text(
+                    text = description,
+                    color = descriptionColor,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .basicMarquee(iterations = Int.MAX_VALUE)
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun SmallCard(
     image: ImageBitmap,
     primaryLabel: String,
     secondaryLabel: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     val cornerRound: Dp = 12.dp
 
@@ -144,7 +243,10 @@ fun SmallCard(
                 color = Darker,
                 shape = RoundedCornerShape(cornerRound)
             )
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .clickable {
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

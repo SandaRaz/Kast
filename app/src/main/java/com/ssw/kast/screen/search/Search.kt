@@ -1,4 +1,4 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -55,7 +55,7 @@ import com.ssw.kast.component.BottomNavigationBar
 import com.ssw.kast.component.SearchBar
 import com.ssw.kast.component.SelectedItemManagement
 import com.ssw.kast.model.component.SearchResultModel
-import com.ssw.kast.model.getImageFromResources
+import com.ssw.kast.model.entity.getImageFromResources
 import com.ssw.kast.ui.theme.Grey
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey

@@ -1,4 +1,4 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,7 +31,7 @@ import com.ssw.kast.component.SmallCardContainer
 import com.ssw.kast.component.TitleBar
 import com.ssw.kast.model.component.MusicCardModel
 import com.ssw.kast.model.component.SmallCardModel
-import com.ssw.kast.model.getImageFromResources
+import com.ssw.kast.model.entity.getImageFromResources
 import com.ssw.kast.ui.theme.KastTheme
 
 @Composable

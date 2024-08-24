@@ -1,4 +1,4 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,10 +36,10 @@ import androidx.navigation.compose.rememberNavController
 import com.ssw.kast.R
 import com.ssw.kast.component.BottomNavigationBar
 import com.ssw.kast.component.SelectedItemManagement
-import com.ssw.kast.model.Country
-import com.ssw.kast.model.Gender
-import com.ssw.kast.model.User
-import com.ssw.kast.model.getImageFromResources
+import com.ssw.kast.model.entity.Country
+import com.ssw.kast.model.entity.Gender
+import com.ssw.kast.model.entity.User
+import com.ssw.kast.model.entity.getImageFromResources
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
 import org.threeten.bp.LocalDate

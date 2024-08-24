@@ -6,6 +6,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ssw.kast.component.SelectedItemManagement
 import com.ssw.kast.model.persistence.PreferencesManager
+import com.ssw.kast.screen.account.LoginScreen
+import com.ssw.kast.screen.account.SignUpMusicGenreScreen
+import com.ssw.kast.screen.account.SignUpScreen
+import com.ssw.kast.screen.feed.HomeScreen
+import com.ssw.kast.screen.menu.MenuScreen
+import com.ssw.kast.screen.music.MusicScreen
+import com.ssw.kast.screen.music.PlayerScreen
+import com.ssw.kast.screen.search.SearchScreen
 
 @Composable
 fun AppNavigation(
@@ -20,6 +28,9 @@ fun AppNavigation(
         }
         composable("search") {
             SearchScreen(navController, selectedItem, bottomNavigationBar)
+        }
+        composable("music") {
+            MusicScreen(navController, selectedItem, bottomNavigationBar)
         }
         composable("menu") {
             MenuScreen(navController, selectedItem, bottomNavigationBar)
@@ -39,6 +50,9 @@ fun AppNavigation(
         }
         composable("sign_up_music_genre") {
             SignUpMusicGenreScreen(navController)
+        }
+        composable("player") {
+            PlayerScreen(navController, selectedItem)
         }
     }
 }

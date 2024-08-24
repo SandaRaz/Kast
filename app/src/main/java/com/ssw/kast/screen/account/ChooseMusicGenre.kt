@@ -1,4 +1,4 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.account
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,7 +37,7 @@ import com.ssw.kast.component.ItemPicker
 import com.ssw.kast.component.LogoHeader
 import com.ssw.kast.component.OutlineSignButton
 import com.ssw.kast.component.SignButton
-import com.ssw.kast.model.abstractListOfMusicGenre
+import com.ssw.kast.model.entity.abstractListOfMusicGenre
 import com.ssw.kast.model.component.PickerElement
 import com.ssw.kast.ui.theme.KastTheme
 
@@ -128,7 +128,7 @@ fun SignUpMusicGenreScreen(
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FieldGroupTitle(title = "Pick your preferred music genres")
+                FieldGroupTitle(title = "Pick your favourites music genres")
 
                 ItemPicker(
                     label = "music genres",

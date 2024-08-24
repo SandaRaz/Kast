@@ -1,5 +1,8 @@
 package com.ssw.kast.component
 
+import android.os.Build
+import android.os.Build.VERSION
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,13 +22,60 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.DefaultAlpha
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.skydoves.cloudy.Cloudy
+import com.skydoves.cloudy.internals.render.RenderScriptToolkit
+
+@Composable
+fun BlurredImage(
+    modifier: Modifier = Modifier,
+    image: ImageBitmap,
+    contentDescription: String?,
+    radius: Int,
+    contentScale: ContentScale = ContentScale.Fit,
+    alignment: Alignment = Alignment.Center,
+    alpha: Float = DefaultAlpha,
+    colorFilter: ColorFilter? = null
+) {
+    if (VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        Image(
+            painter = BitmapPainter(image),
+            contentDescription = contentDescription,
+            alignment = alignment,
+            contentScale = contentScale,
+            alpha = alpha,
+            colorFilter = colorFilter,
+            modifier = modifier
+                .blur(radius = radius.dp)
+        )
+    } else {
+        Cloudy (radius = radius) {
+            Image(
+                painter = BitmapPainter(image),
+                contentDescription = contentDescription,
+                alignment = alignment,
+                contentScale = contentScale,
+                alpha = alpha,
+                colorFilter = colorFilter,
+                modifier = modifier
+            )
+        }
+    }
+}
 
 @Composable
 fun FieldGroupTitle(
@@ -89,6 +139,34 @@ fun FieldGroupTitle(
             .fillMaxWidth()
             .height(16.dp)
     )
+}
+
+@Composable
+fun LegacyBlurImage(
+    modifier: Modifier = Modifier,
+    imageBitmap: ImageBitmap,
+    contentDescription: String?,
+    contentScale: ContentScale = ContentScale.Fit,
+    blur: Int
+) {
+    if (VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        Image(
+            bitmap = imageBitmap,
+            contentDescription = contentDescription,
+            contentScale = contentScale,
+            modifier = modifier.blur(blur.dp)
+        )
+    } else {
+        val bitmap = imageBitmap.asAndroidBitmap().let { RenderScriptToolkit.blur(it, blur) }
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = contentDescription,
+                contentScale = contentScale,
+                modifier = modifier
+            )
+        }
+    }
 }
 
 @Composable

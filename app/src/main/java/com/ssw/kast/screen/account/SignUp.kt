@@ -1,13 +1,10 @@
-package com.ssw.kast.screen
+package com.ssw.kast.screen.account
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,18 +12,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,31 +31,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ssw.kast.component.DatePickerField
+import com.ssw.kast.component.DropDownList
+import com.ssw.kast.component.FieldGroupTitle
 import com.ssw.kast.component.LogoHeader
 import com.ssw.kast.component.SignButton
 import com.ssw.kast.component.SignTextField
-import com.ssw.kast.model.persistence.PreferencesManager
+import com.ssw.kast.model.entity.abstractListOfCountry
+import com.ssw.kast.model.entity.abstractListOfGender
+import com.ssw.kast.model.component.PickerElement
 import com.ssw.kast.ui.theme.KastTheme
-import com.ssw.kast.ui.theme.LightGrey
 
 @Composable
-fun LoginScreen(
-    navHostController: NavHostController,
-    preferencesManager: PreferencesManager
+fun SignUpScreen(
+    navHostController: NavHostController
 ) {
-    Scaffold (
+    Scaffold(
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
     ) { innerPadding ->
-        Column (
+        Column(
             modifier = Modifier
                 .statusBarsPadding()
                 .fillMaxSize()
@@ -89,7 +85,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-                            navHostController.navigate("home")
+                            navHostController.navigate("login")
                         }
                 )
 
@@ -109,7 +105,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "sign in",
+                text = "sign up",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary
@@ -121,25 +117,25 @@ fun LoginScreen(
                     .height(48.dp)
             )
 
-            // Se connecter ou activer le mode offline
-            /*
-                Sauvegarder dans un SharredPreferences si le mode offline est activé
-                Si le mode offline est désactivé mais aucune compte n'est connecté on
-                renvoie cet ecran de Login
-             */
-
             // ------------ fetching data -------------
+            val countryList = mutableListOf<PickerElement>()
+            abstractListOfCountry().forEach { country ->
+                countryList.add(PickerElement(country.name, country))
+            }
 
+            val genderList = mutableListOf<PickerElement>()
+            abstractListOfGender().forEach { gender ->
+                genderList.add(PickerElement(gender.type, gender))
+            }
 
             var usernameInput by remember { mutableStateOf("") }
+            var mailInput by remember { mutableStateOf("") }
+            var dateOfBirth by remember { mutableStateOf("") }
             var passwordInput by remember { mutableStateOf("") }
-            var offlineMode by remember { mutableStateOf(false) }
-
-            val prefsOfflineMode = preferencesManager.getBooleanData("offlineMode", false)
-            offlineMode = prefsOfflineMode
+            var confirmPasswordInput by remember { mutableStateOf("") }
+            var selectedCountry by remember { mutableStateOf(PickerElement("", null)) }
+            var selectedGender by remember { mutableStateOf(PickerElement("", null)) }
             // ----------------------------------------
-
-
 
             Column(
                 modifier = Modifier
@@ -152,10 +148,10 @@ fun LoginScreen(
             ) {
                 SignTextField(
                     value = usernameInput,
-                    onValueChange = { newInput ->
-                        usernameInput = newInput
+                    onValueChange = {
+                        usernameInput = it
                     },
-                    label = "username",
+                    label = "username *",
                     icon = Icons.Outlined.Person,
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -163,98 +159,87 @@ fun LoginScreen(
                 )
 
                 SignTextField(
-                    value = passwordInput,
-                    onValueChange = { newInput ->
-                        passwordInput = newInput
+                    value = mailInput,
+                    onValueChange = {
+                        mailInput = it
                     },
-                    label = "password",
-                    icon = Icons.Outlined.Lock,
-                    secured = true,
+                    label = "email",
+                    icon = Icons.Outlined.AlternateEmail,
                     modifier = Modifier
                         .fillMaxWidth(),
                     withBottomPadding = true
                 )
 
+                DatePickerField(
+                    onDateSelected = {
+                         dateOfBirth = it
+                    },
+                    label = "date of birth",
+                    withBottomPadding = true
+                )
+
+                DropDownList(
+                    label = "your country",
+                    selected = selectedCountry,
+                    onSelectItem = { selected ->
+                        selectedCountry = selected
+                    },
+                    items = countryList,
+                    withBottomPadding = true
+                )
+
+                DropDownList(
+                    label = "your gender",
+                    selected = selectedGender,
+                    onSelectItem = { selected ->
+                        selectedGender = selected
+                    },
+                    items = genderList,
+                    withBottomPadding = true
+                )
+
+                FieldGroupTitle(title = "Password")
+
+                SignTextField(
+                    value = passwordInput,
+                    onValueChange = {
+                        passwordInput = it
+                    },
+                    label = "password *",
+                    icon = Icons.Outlined.Lock,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    withTopPadding = true,
+                    withBottomPadding = true,
+                    secured = true
+                )
+
+                SignTextField(
+                    value = confirmPasswordInput,
+                    onValueChange = {
+                        confirmPasswordInput = it
+                    },
+                    label = "confirm password *",
+                    icon = Icons.Outlined.Lock,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    withBottomPadding = true,
+                    secured = true
+                )
+
                 SignButton(
-                    label = "Connect",
+                    label = "next",
                     onClick = {
 
+                        navHostController.navigate("sign_up_music_genre")
                     }
                 )
 
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(16.dp)
+                        .height(64.dp)
                 )
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(
-                            1.dp,
-                            Color.Transparent
-                        ),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "New? ",
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
-                    Text(
-                        text = "Sign up",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .clickable{
-                                navHostController.navigate("sign_up")
-                            }
-                    )
-                }
-
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(16.dp)
-                )
-
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(
-                            1.dp,
-                            Color.Transparent
-                        ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Switch(
-                        checked = offlineMode,
-                        onCheckedChange = {
-                            offlineMode = it
-                            preferencesManager.saveBooleanData("offlineMode", offlineMode)
-                            Log.d("Login", "OfflineMode: ${preferencesManager.getBooleanData("offlineMode", false)}")
-                        },
-                        colors = SwitchDefaults.colors(
-//                            checkedThumbColor = MaterialTheme.colorScheme.primary,
-//                            checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-//                            checkedBorderColor = MaterialTheme.colorScheme.primary
-                        )
-                    )
-
-                    Spacer(
-                        modifier = Modifier
-                            .height(48.dp)
-                            .width(8.dp)
-                            .background(Color.Transparent)
-                    )
-
-                    Text(
-                        text = "Offline mode",
-                        color = LightGrey
-                    )
-                }
             }
         }
     }
@@ -262,10 +247,10 @@ fun LoginScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview(){
+fun SignUpScreenPreview() {
     KastTheme {
         val navHostController = rememberNavController()
-        
-        LoginScreen(navHostController, PreferencesManager(LocalContext.current))
+
+        SignUpScreen(navHostController)
     }
 }

@@ -1,4 +1,4 @@
-package com.ssw.kast.model
+package com.ssw.kast.model.entity
 
 import androidx.compose.ui.graphics.ImageBitmap
 import org.threeten.bp.LocalDate
@@ -10,6 +10,7 @@ class User {
     lateinit var passwordHash: String
     lateinit var dateOfBirth: LocalDate
     var profilePicture: ImageBitmap
+    lateinit var profilePictureCode: String
     var biography: String = ""
     var followersCount: Int = 0
     var followingCount: Int = 0
@@ -25,6 +26,7 @@ class User {
         passwordHash: String,
         dateOfBirth: LocalDate,
         profilePicture: ImageBitmap,
+        profilePictureCode: String,
         biography: String,
         followersCount: Int,
         followingCount: Int,
@@ -38,6 +40,7 @@ class User {
         this.passwordHash = passwordHash
         this.dateOfBirth = dateOfBirth
         this.profilePicture = profilePicture
+        this.profilePictureCode = profilePictureCode
         this.biography = biography
         this.followersCount = followersCount
         this.followingCount = followingCount

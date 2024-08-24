@@ -10,15 +10,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
@@ -36,6 +40,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -55,12 +60,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.ssw.kast.model.component.PickerElement
 import com.ssw.kast.ui.theme.Grey
+import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
 import com.ssw.kast.ui.theme.montserratFamily
 import java.util.Date
@@ -272,13 +279,20 @@ fun DropDownList(
         }
     }
 
-    if (withBottomPadding) {
+    if (withBottomPadding) {5*7
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(bottomPadding)
         )
     }
+}
+
+@Composable
+fun ImagePicker(
+
+) {
+
 }
 
 @Composable
@@ -370,8 +384,8 @@ fun ItemPicker(
                         contentDescription = "Remove",
                         tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                         modifier = Modifier
-                            .size(18.dp)
-                            .clickable{
+                            .size(24.dp)
+                            .clickable {
                                 onDeleteItem(item)
                             }
                     )
@@ -537,5 +551,27 @@ fun SignTextField(
                 .fillMaxWidth()
                 .height(bottomPadding)
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FormsPreview() {
+    KastTheme {
+        Scaffold(
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
+        ) { innerPadding ->
+            Column (
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState(), true, null, false)
+                    .padding(innerPadding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+            }
+        }
     }
 }
