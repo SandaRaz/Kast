@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import com.google.gson.annotations.JsonAdapter
 import com.ssw.kast.model.global.getImageFromBase64
-import com.ssw.kast.model.persistence.dao.SongDao
+import com.ssw.kast.model.persistence.dao.RecentSongDao
 import com.ssw.kast.model.serializer.DateUtils
 import com.ssw.kast.model.serializer.DtoTS
 import org.threeten.bp.Duration
@@ -80,31 +80,32 @@ class Song {
     }
 
     companion object {
-        fun getSong(songDao: SongDao): Song {
+        fun getSong(recentSongDao: RecentSongDao): Song {
             val song = Song()
-            song.id = songDao.id
-            song.title = songDao.title
-            song.singer = songDao.singer
-            song.year = songDao.year
-            song.duration = DateUtils.csharpTimeSpanToDuration(songDao.duration)
-            song.localPath = songDao.localPath
-            song.coverCode = songDao.coverCode
+            song.id = recentSongDao.songId
+            song.title = recentSongDao.title
+            song.singer = recentSongDao.singer
+            song.year = recentSongDao.year
+            song.duration = DateUtils.csharpTimeSpanToDuration(recentSongDao.duration)
+            song.localPath = recentSongDao.localPath
+            song.coverCode = recentSongDao.coverCode
             song.loadCoverBitmap()
-            song.albumId = songDao.albumId
-            song.album = Album(songDao.albumId, songDao.albumName)
-            song.musicGenreId = songDao.musicGenreId
-            song.musicGenre = MusicGenre(songDao.musicGenreId, songDao.musicGenreType)
-            song.uploaderId = songDao.uploaderId
-            song.state = songDao.state
-            song.uploadAt = DateUtils.csharpDateTimeToLocalDateTime(songDao.uploadAt)
-            song.listeners = songDao.listeners
+            song.albumId = recentSongDao.albumId
+            song.album = Album(recentSongDao.albumId, recentSongDao.albumName)
+            song.musicGenreId = recentSongDao.musicGenreId
+            song.musicGenre = MusicGenre(recentSongDao.musicGenreId, recentSongDao.musicGenreType)
+            song.uploaderId = recentSongDao.uploaderId
+            song.state = recentSongDao.state
+            song.uploadAt = DateUtils.csharpDateTimeToLocalDateTime(recentSongDao.uploadAt)
+            song.listeners = recentSongDao.listeners
 
             return song
         }
 
-        fun getSongDao(song: Song, dataType: Int): SongDao {
-            val songDao = SongDao(
-                id = song.id.toString(),
+        fun getSongDao(song: Song, dataType: Int, userId: String): RecentSongDao {
+            val recentSongDao = RecentSongDao(
+                id = UUID.randomUUID().toString(),
+                songId = song.id.toString(),
                 title = song.title,
                 singer = song.singer,
                 year = song.year,
@@ -120,16 +121,17 @@ class Song {
                 state = song.state,
                 uploadAt = DateUtils.localDateTimeToCsharpDateTime(song.uploadAt),
                 dataType = dataType, /* exemple: recent = 2 */
-                date = DateUtils.localDateTimeToCsharpDateTime(LocalDateTime.now())
+                date = DateUtils.localDateTimeToCsharpDateTime(LocalDateTime.now()),
+                userId = userId
             )
 
-            return songDao
+            return recentSongDao
         }
 
-        fun getSongs(songsDao: List<SongDao>): List<Song> {
+        fun getSongs(recentSongsDao: List<RecentSongDao>): List<Song> {
             val songs: MutableList<Song> = mutableListOf()
-            for (songDao in songsDao) {
-                songs.add(Song.getSong(songDao))
+            for (recentSongDao in recentSongsDao) {
+                songs.add(getSong(recentSongDao))
             }
 
             return songs

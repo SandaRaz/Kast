@@ -69,7 +69,7 @@ fun MusicScreen(
         if (isLoggedUser) {
             loggedUser = accountManager.currentUser!!
 
-            songManager.loadRecentSong()
+            songManager.loadRecentSong(loggedUser.id)
             songViewModel.loadSuggestions(loggedUser.id)
             playlistViewModel.loadUserPlaylists(loggedUser.id)
         }

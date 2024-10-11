@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import com.ssw.kast.model.entity.User
@@ -12,6 +13,7 @@ import com.ssw.kast.model.dto.AuthInfo
 import com.ssw.kast.model.manager.SongManager
 import com.ssw.kast.model.persistence.AppDatabase
 import com.ssw.kast.network.repository.UserRepository
+import com.ssw.kast.ui.screen.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -35,7 +37,12 @@ class SignInViewModel @Inject constructor(
         userLoginInput: String,
         passwordInput: String,
         credentialError: MutableState<String>,
-        accountManager: AccountManager
+        accountManager: AccountManager,
+        songManager: SongManager,
+        userDefaultPicture: ImageBitmap,
+        userViewModel: UserViewModel,
+        playlistDefaultCover: ImageBitmap,
+        playlistViewModel: PlaylistViewModel
     ) {
         var inputError = 0
         if (userLoginInput.isBlank()) {
@@ -64,7 +71,24 @@ class SignInViewModel @Inject constructor(
                 signedUser.loadBitmapProfilePicture()
                 accountManager.currentUser = signedUser
 
-                navController.navigate("home")
+                userViewModel.refreshNewestUsers(
+                    accountManager = accountManager,
+                    navController = navController,
+                    loggedUserId = signedUser.id,
+                    amount = 5,
+                    defaultProfilePicture = userDefaultPicture
+                )
+
+                songManager.refreshRecentSong(signedUser.id)
+                playlistViewModel.refreshUserPlaylists(signedUser.id)
+                playlistViewModel.refreshPlaylistCards(
+                    navController = navController,
+                    amount = 5,
+                    defaultCover = playlistDefaultCover
+                )
+                playlistViewModel.refreshPlaylistPickers(signedUser.id)
+
+                NavigationManager.navigateTo(navController, "home")
             } else {
                 Log.e("SignInError", "Error: ${signedUser.errorCatcher.error}")
                 credentialError.value = signedUser.errorCatcher.error

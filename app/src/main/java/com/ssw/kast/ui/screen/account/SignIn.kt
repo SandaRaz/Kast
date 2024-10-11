@@ -43,7 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.ssw.kast.R
+import com.ssw.kast.model.global.getCachedImageFromResources
 import com.ssw.kast.model.manager.AccountManager
+import com.ssw.kast.model.manager.SongManager
 import com.ssw.kast.model.persistence.AppDatabase
 import com.ssw.kast.ui.component.LogoHeader
 import com.ssw.kast.ui.component.SignButton
@@ -52,7 +55,10 @@ import com.ssw.kast.model.persistence.PreferencesManager
 import com.ssw.kast.ui.component.InputError
 import com.ssw.kast.ui.screen.NavigationManager
 import com.ssw.kast.ui.theme.LightGrey
+import com.ssw.kast.viewmodel.PlaylistViewModel
 import com.ssw.kast.viewmodel.SignInViewModel
+import com.ssw.kast.viewmodel.SongViewModel
+import com.ssw.kast.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -61,7 +67,10 @@ fun SignInScreen(
     navController: NavHostController,
     preferencesManager: PreferencesManager,
     accountManager: AccountManager,
-    viewModel: SignInViewModel = hiltViewModel()
+    songManager: SongManager,
+    signInViewModel: SignInViewModel = hiltViewModel(),
+    userViewModel: UserViewModel,
+    playlistViewModel: PlaylistViewModel
 ) {
     // Se connecter ou activer le mode offline
     /*
@@ -81,6 +90,9 @@ fun SignInScreen(
     var offlineMode by remember { mutableStateOf(prefsOfflineMode) }
 
     val scope = rememberCoroutineScope()
+
+    val defaultUserPicture = getCachedImageFromResources(resourceId = R.drawable.default_profil)
+    val defaultPlaylistCover = getCachedImageFromResources(resourceId = R.drawable.default_playlist_cover)
     // ----------------------------------------
 
 
@@ -117,7 +129,7 @@ fun SignInScreen(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-                            NavigationManager.navigateTo(navController,"home")
+                            NavigationManager.navigateTo(navController, "home")
                         }
                 )
 
@@ -138,7 +150,7 @@ fun SignInScreen(
 
             Text(
                 text = "sign in",
-                fontSize = 36.sp,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -193,13 +205,18 @@ fun SignInScreen(
                     label = "Connect",
                     onClick = {
                         scope.launch {
-                            viewModel.onPressConnect(
+                            signInViewModel.onPressConnect(
                                 database = database,
                                 navController = navController,
                                 userLoginInput = userLoginInput.trim(),
                                 passwordInput = passwordInput.trim(),
                                 credentialError = wrongCredential,
-                                accountManager = accountManager
+                                accountManager = accountManager,
+                                songManager = songManager,
+                                userDefaultPicture = defaultUserPicture,
+                                userViewModel = userViewModel,
+                                playlistDefaultCover = defaultPlaylistCover,
+                                playlistViewModel = playlistViewModel
                             )
                         }
                     }
@@ -296,7 +313,8 @@ fun SignInScreen(
                             1.dp,
                             Color.Transparent
                         ),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "Network setting",
@@ -319,6 +337,29 @@ fun SignInScreen(
                             Color.Transparent
                         )
                 )
+
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "About",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textDecoration = TextDecoration.Underline,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clickable{
+                                NavigationManager.navigateTo(navController,"about")
+                            }
+                    )
+                }
+
             }
         }
     }

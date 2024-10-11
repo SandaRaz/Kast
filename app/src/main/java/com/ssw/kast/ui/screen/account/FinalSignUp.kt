@@ -40,10 +40,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ssw.kast.R
 import com.ssw.kast.model.global.dateToString
 import com.ssw.kast.model.global.getBase64FromUri
+import com.ssw.kast.model.global.getCachedImageFromResources
 import com.ssw.kast.model.manager.AccountManager
 import com.ssw.kast.model.manager.AuthManager
+import com.ssw.kast.model.manager.SongManager
 import com.ssw.kast.model.persistence.AppDatabase
 import com.ssw.kast.ui.component.ImagePickerSample
 import com.ssw.kast.ui.component.InputError
@@ -53,7 +56,9 @@ import com.ssw.kast.ui.component.SignButton
 import com.ssw.kast.ui.component.TitleAndValue
 import com.ssw.kast.ui.screen.NavigationManager
 import com.ssw.kast.ui.theme.KastTheme
+import com.ssw.kast.viewmodel.PlaylistViewModel
 import com.ssw.kast.viewmodel.SignUpViewModel
+import com.ssw.kast.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDateTime
 
@@ -63,7 +68,10 @@ fun FinalSignUpScreen(
     navController: NavHostController,
     authManager: AuthManager,
     accountManager: AccountManager,
-    viewModel: SignUpViewModel = hiltViewModel()
+    songManager: SongManager,
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    userViewModel: UserViewModel,
+    playlistViewModel: PlaylistViewModel
 ) {
     // -------- fetching data --------
     val context = LocalContext.current
@@ -72,6 +80,9 @@ fun FinalSignUpScreen(
     var profilPictureUri by remember { mutableStateOf<Uri?>(null) }
 
     var signUpError by remember { mutableStateOf("") }
+
+    val userDefaultPicture = getCachedImageFromResources(R.drawable.default_profil)
+    val playlistDefaultCover = getCachedImageFromResources(R.drawable.default_playlist_cover)
     // -------------------------------
 
     Scaffold (
@@ -106,7 +117,7 @@ fun FinalSignUpScreen(
                     modifier = Modifier
                         .size(40.dp)
                         .clickable {
-                            NavigationManager.navigateTo(navController,"sign_up_music_genre")
+                            NavigationManager.navigateTo(navController, "sign_up_music_genre")
                         }
                 )
 
@@ -275,9 +286,26 @@ fun FinalSignUpScreen(
                         scope.launch {
                             Log.d("FinalSignUp", "USER: \n $user")
 
-                            val err = viewModel.signUp(database, accountManager, user)
+                            val err = signUpViewModel.signUp(database, accountManager, user)
                             if (err.code == 0) {
                                 signUpError = ""
+
+                                userViewModel.refreshNewestUsers(
+                                    accountManager = accountManager,
+                                    navController = navController,
+                                    loggedUserId = user.id,
+                                    amount = 5,
+                                    defaultProfilePicture = userDefaultPicture
+                                )
+
+                                songManager.refreshRecentSong(user.id)
+                                playlistViewModel.refreshUserPlaylists(user.id)
+                                playlistViewModel.refreshPlaylistCards(
+                                    navController = navController,
+                                    amount = 5,
+                                    defaultCover = playlistDefaultCover
+                                )
+                                playlistViewModel.refreshPlaylistPickers(user.id)
 
                                 NavigationManager.navigateTo(navController,"home")
                             } else {

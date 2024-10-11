@@ -62,7 +62,7 @@ fun NetworkScreen (
         ) {
             // ------ retrieving data from SharedPreferences ------
             val savedProtocol = preferencesManager.getStringData("protocol", "http")
-            val savedIpAddress = preferencesManager.getStringData("ipAddress", "0.0.0.0")
+            val savedIpAddress = preferencesManager.getStringData("ipAddress", "192.168.137.1")
             val savedPort = preferencesManager.getStringData("port", "5039")
 
             var protocol by remember { mutableStateOf(savedProtocol) }
@@ -73,7 +73,13 @@ fun NetworkScreen (
             BackNavBar(
                 title = "Network Setting",
                 onPressBackButton = {
-                    NavigationManager.navigateTo(navController,"menu")
+                    NavigationManager.goToPreviousScreen(
+                        navController = navController,
+                        selectedItem = selectedItem,
+                        onPreviousRouteNull = {
+                            NavigationManager.navigateTo(navController,"menu")
+                        }
+                    )
                 }
             )
 

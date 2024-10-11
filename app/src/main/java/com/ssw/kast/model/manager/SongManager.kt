@@ -89,21 +89,21 @@ class SongManager {
 
     // ---- End listen functions ----
 
-    suspend fun addToRecent(song: Song) {
+    suspend fun addToRecent(song: Song, userId: Any) {
         if (recentSongs.size == 15) {
             recentSongs.removeFirst()
-            database.songDao().deleteOldestRecentSong()
+            database.recentSongDao().deleteOldestRecentSong(userId.toString())
         }
 
         for (recentSong in recentSongs) {
             if (recentSong.id == song.id) {
                 recentSongs.remove(recentSong)
-                database.songDao().deleteRecentSong(recentSong.id.toString())
+                database.recentSongDao().deleteRecentSong(recentSong.id.toString(), userId.toString())
                 break
             }
         }
         recentSongs.add(song)
-        database.songDao().insert(Song.getSongDao(song, 2))
+        database.recentSongDao().insert(Song.getSongDao(song, 2, userId.toString()))
         //Log.d("SongManager", "Add song in recent, size = ${recentSongs.size}")
     }
 
@@ -116,14 +116,14 @@ class SongManager {
         this.isPlayed = !this.isPlayed
     }
 
-    suspend fun clickNewSong(song: Song, isPlayed: Boolean) {
+    suspend fun clickNewSong(song: Song, userId: Any, isPlayed: Boolean) {
         if (!isCurrent(song)) {
             this.songLoading.value = true
 
             this.currentSong = song
             //Log.d("SongManager","CurrentSong Id: ${this.currentSong!!.id}")
             this.isPlayed = isPlayed
-            this.addToRecent(song)
+            this.addToRecent(song, userId)
 
             // ---- Restore player's song position ----
             this.audioPlayer.player.seekTo(0L)
@@ -269,20 +269,29 @@ class SongManager {
 
     // -------- Dao functions --------
 
-    suspend fun loadRecentSong() {
+    suspend fun loadRecentSong(userId: Any) {
         try {
             if (this.recentSongs.size == 0) {
-                val recentSongsDao = this.database.songDao().getRecentSongs()
-                //Log.d("Load Recent Song", "Recent song in database: ${recentSongsDao.size}")
-                for(songDao in recentSongsDao) {
-                    this.recentSongs.add(Song.getSong(songDao))
-                }
+                refreshRecentSong(userId)
             }
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("Load Recent Song", "Exception: ${e.message}")
         }
+    }
 
+    suspend fun refreshRecentSong(userId: Any) {
+        try {
+            val recentSongsDao = this.database.recentSongDao().getRecentSongs(userId.toString())
+            //Log.d("Load Recent Song", "Recent song in database: ${recentSongsDao.size}")
+            this.recentSongs.clear()
+            for(songDao in recentSongsDao) {
+                this.recentSongs.add(Song.getSong(songDao))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("Refresh Recent Song", "Exception: ${e.message}")
+        }
     }
 
     // ------ End dao functions ------

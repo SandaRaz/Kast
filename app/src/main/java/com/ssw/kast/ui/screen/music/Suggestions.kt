@@ -138,7 +138,7 @@ fun SuggestionsScreen (
                                 scope.launch {
                                     try {
                                         songManager.onSongListChange(listSuggestions)
-                                        songManager.clickNewSong(song, true)
+                                        songManager.clickNewSong(song, loggedUser.id, true)
                                         NavigationManager.navigateTo(navController,"player")
                                     } catch (e: Exception) {
                                         Log.e("Suggestions", "Exception: ${e.message}")

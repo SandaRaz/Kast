@@ -62,7 +62,7 @@ fun RecentScreen (
         if (isLoggedUser) {
             loggedUser = accountManager.currentUser!!
 
-            songManager.loadRecentSong()
+            songManager.loadRecentSong(loggedUser.id)
             recentPlayed = songManager.recentSongs
             recentPlayed = recentPlayed.reversed()
         } else {
@@ -124,7 +124,7 @@ fun RecentScreen (
                             scope.launch {
                                 try {
                                     songManager.onSongListChange(recentPlayed)
-                                    songManager.clickNewSong(song, true)
+                                    songManager.clickNewSong(song, loggedUser.id, true)
                                     navController.navigate("player")
                                 } catch (e: Exception) {
                                     Log.e("Recent", "Exception: ${e.message}")

@@ -220,7 +220,7 @@ fun SearchScreen(
                                     scope.launch {
                                         try {
                                             songManager.onSongListChange(listOf(song))
-                                            songManager.clickNewSong(song, true)
+                                            songManager.clickNewSong(song, loggedUser.id, true)
                                             NavigationManager.navigateTo(navController,"player")
                                         } catch (e: Exception) {
                                             Log.e("Search", "Exception: ${e.message}")

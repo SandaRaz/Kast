@@ -239,7 +239,7 @@ fun MusicCard(
                     ),
                     shape = RoundedCornerShape(0.dp, 0.dp, cornerRound, cornerRound)
                 )
-                .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 10.dp)
+                .padding(start = 10.dp, top = 4.dp, end = 10.dp, bottom = 4.dp)
         ){
             Row {
                 Text (
@@ -262,7 +262,7 @@ fun MusicCard(
                     modifier = Modifier
                         .background(Color.Transparent)
                         .fillMaxWidth()
-                        .height(4.dp)
+                        .height(2.dp)
                 )
                 Row {
                     Text (
@@ -286,7 +286,7 @@ fun MusicCard(
                     modifier = Modifier
                         .background(Color.Transparent)
                         .fillMaxWidth()
-                        .height(4.dp)
+                        .height(2.dp)
                 )
                 Row {
                     Text (

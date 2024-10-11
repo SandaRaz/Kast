@@ -106,6 +106,7 @@ fun HomeScreen(
             songViewModel.loadMostStreamedSongs(
                 navController,
                 songManager,
+                loggedUser.id,
                 5,
                 defaultSongCover
             )
@@ -117,7 +118,7 @@ fun HomeScreen(
                 defaultCategoryCover
             )
 
-            songManager.loadRecentSong()
+            songManager.loadRecentSong(loggedUser.id)
             recentPlayedDesc = songManager.recentSongs.reversed().take(5)
             // if (!content didnt change) => { }
             recentPlayedDesc.forEach { song ->
@@ -130,7 +131,7 @@ fun HomeScreen(
                             scope.launch {
                                 try {
                                     songManager.onSongListChange(songManager.recentSongs)
-                                    songManager.clickNewSong(song, true)
+                                    songManager.clickNewSong(song, loggedUser.id,true)
                                     NavigationManager.navigateTo(navController,"player")
                                 } catch (e: Exception) {
                                     Log.e("Home Recent Played", "Exception: ${e.message}")
@@ -240,6 +241,7 @@ fun HomeScreen(
                                     songViewModel.refreshMostStreamedSongs(
                                         navController = navController,
                                         songManager = songManager,
+                                        userId = loggedUser.id,
                                         amount = 5,
                                         defaultCover = defaultSongCover
                                     )
@@ -310,6 +312,12 @@ fun HomeScreen(
                             isNavigable = true,
                             onNavigationClick = {
                                 NavigationManager.navigateTo(navController, "recent")
+                            },
+                            extraIcon = Icons.Outlined.Refresh,
+                            onClickExtraIcon = {
+                                scope.launch {
+                                    songManager.refreshRecentSong(loggedUser.id)
+                                }
                             }
                         )
                         MusicCardHorizontalContainer(
@@ -319,24 +327,26 @@ fun HomeScreen(
                         )
                     }
 
-                    TitleBar(
-                        title = "Playlist",
-                        extraIcon = Icons.Outlined.Refresh,
-                        onClickExtraIcon = {
-                            scope.launch {
-                                playlistViewModel.refreshPlaylistCards(navController, 5, defaultPlaylistCover)
+                    if (playlist5Cards.isNotEmpty()) {
+                        TitleBar(
+                            title = "Playlist",
+                            extraIcon = Icons.Outlined.Refresh,
+                            onClickExtraIcon = {
+                                scope.launch {
+                                    playlistViewModel.refreshPlaylistCards(navController, 5, defaultPlaylistCover)
+                                }
+                            },
+                            isNavigable = true,
+                            onNavigationClick = {
+                                selectedItem.onSelectItem("music")
+                                NavigationManager.navigateTo(navController,"playlist")
                             }
-                        },
-                        isNavigable = true,
-                        onNavigationClick = {
-                            selectedItem.onSelectItem("music")
-                            NavigationManager.navigateTo(navController,"playlist")
-                        }
-                    )
-                    MusicCardVerticalContainer(
-                        addMoreSign = (playlistViewModel.playlists.size > 5),
-                        listMusicCard = playlist5Cards
-                    )
+                        )
+                        MusicCardVerticalContainer(
+                            addMoreSign = (playlistViewModel.playlists.size > 5),
+                            listMusicCard = playlist5Cards
+                        )
+                    }
 
                     /* ------- new release -------- */
 

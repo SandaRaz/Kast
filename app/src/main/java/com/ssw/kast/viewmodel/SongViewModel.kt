@@ -54,6 +54,7 @@ class SongViewModel @Inject constructor(
     fun loadMostStreamedSongs(
         navController: NavHostController,
         songManager: SongManager,
+        userId: Any,    
         amount: Int,
         defaultCover: ImageBitmap
     ) {
@@ -62,6 +63,7 @@ class SongViewModel @Inject constructor(
                 refreshMostStreamedSongs(
                     navController,
                     songManager,
+                    userId,
                     amount,
                     defaultCover
                 )
@@ -72,6 +74,7 @@ class SongViewModel @Inject constructor(
     suspend fun refreshMostStreamedSongs(
         navController: NavHostController,
         songManager: SongManager,
+        userId: Any,
         amount: Int,
         defaultCover: ImageBitmap
     ) {
@@ -92,7 +95,7 @@ class SongViewModel @Inject constructor(
                             viewModelScope.launch {
                                 try {
                                     songManager.onSongListChange(mostStreamedSongs.value)
-                                    songManager.clickNewSong(song, true)
+                                    songManager.clickNewSong(song, userId,true)
                                     NavigationManager.navigateTo(navController, "player")
                                 } catch (e: Exception) {
                                     Log.e("MostStreamedSong", "Exception: ${e.message}")

@@ -137,7 +137,7 @@ fun StreamedScreen (
                                 scope.launch {
                                     try {
                                         songManager.onSongListChange(listStreamedSongs)
-                                        songManager.clickNewSong(song, true)
+                                        songManager.clickNewSong(song, loggedUser.id, true)
                                         NavigationManager.navigateTo(navController,"player")
                                     } catch (e: Exception) {
                                         Log.e("Streamed", "Exception: ${e.message}")

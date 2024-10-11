@@ -73,7 +73,7 @@ fun MenuItem(
                 text = label,
                 color = MaterialTheme.colorScheme.tertiary,
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 20.sp
+                fontSize = 16.sp
             )
         }
     }

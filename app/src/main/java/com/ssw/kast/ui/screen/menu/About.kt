@@ -32,12 +32,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.ssw.kast.ui.component.BackNavBar
+import com.ssw.kast.ui.component.SelectedItemManagement
 import com.ssw.kast.ui.component.TitleBar
 import com.ssw.kast.ui.screen.NavigationManager
 
 @Composable
 fun AboutScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    selectedItem: SelectedItemManagement
 ) {
     // ---------- Preparing data ------------
 
@@ -78,7 +80,13 @@ fun AboutScreen(
             BackNavBar(
                 title = "About",
                 onPressBackButton = {
-                    NavigationManager.navigateTo(navController, "menu")
+                    NavigationManager.goToPreviousScreen(
+                        navController = navController,
+                        selectedItem = selectedItem,
+                        onPreviousRouteNull = {
+                            NavigationManager.navigateTo(navController,"menu")
+                        }
+                    )
                 }
             )
 

@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.skydoves.cloudy.Cloudy
 import com.skydoves.cloudy.internals.render.RenderScriptToolkit
+import com.ssw.kast.ui.theme.montserrat
 
 @Composable
 fun BlurredImage(
@@ -198,6 +199,7 @@ fun LogoHeader(
             ) {
                 Text(
                     text = "KAST",
+                    fontFamily = montserrat,
                     style = textStyle,
                     letterSpacing = letterSpacing,
                     color = MaterialTheme.colorScheme.primary

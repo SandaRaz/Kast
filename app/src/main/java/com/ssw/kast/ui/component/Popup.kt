@@ -61,6 +61,7 @@ import com.ssw.kast.model.manager.AccountManager
 import com.ssw.kast.model.manager.SongManager
 import com.ssw.kast.ui.theme.Darker
 import com.ssw.kast.ui.theme.KastTheme
+import com.ssw.kast.ui.theme.montserrat
 import com.ssw.kast.viewmodel.PlaylistViewModel
 import com.ssw.kast.viewmodel.SignInViewModel
 import kotlinx.coroutines.delay
@@ -759,6 +760,7 @@ fun StartupPopUp(
                             Text (
                                 text = "Audio Streaming App",
                                 color = MaterialTheme.colorScheme.tertiary,
+                                fontFamily = montserrat,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.SemiBold
                             )

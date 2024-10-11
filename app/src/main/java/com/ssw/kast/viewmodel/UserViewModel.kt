@@ -106,7 +106,7 @@ class UserViewModel @Inject constructor(
                     SmallCardModel(
                         image = user.profilePicture ?: defaultProfilePicture,
                         primaryLabel = user.username,
-                        secondaryLabel = "${user.followersCount} follower",
+                        secondaryLabel = "${user.followersCount} follower" + if (user.followersCount > 1) "s" else "",
                         onClick = {
                             try {
                                 user.biography = "Hello, i am ${user.username} <3."

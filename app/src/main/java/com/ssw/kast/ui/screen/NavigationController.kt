@@ -62,7 +62,7 @@ fun AppNavigation(
     NavHost(navController = navController, startDestination = "home") {
         composable("about") {
             selectedItem.onSelectItem("menu")
-            AboutScreen(navController)
+            AboutScreen(navController, selectedItem)
         }
         composable("categories") {
             selectedItem.onSelectItem("music")
@@ -120,13 +120,13 @@ fun AppNavigation(
             SearchScreen(navController, selectedItem, bottomNavigationBar, accountManager, songManager, searchViewModel, playlistViewModel)
         }
         composable("sign_in") {
-            SignInScreen(database, navController, preferencesManager, accountManager)
+            SignInScreen(database, navController, preferencesManager, accountManager, songManager, userViewModel = userViewModel, playlistViewModel = playlistViewModel)
         }
         composable("sign_up") {
             SignUpScreen(navController, authManager)
         }
         composable("sign_up_finalization") {
-            FinalSignUpScreen(database, navController, authManager, accountManager)
+            FinalSignUpScreen(database, navController, authManager, accountManager, songManager, userViewModel = userViewModel, playlistViewModel = playlistViewModel)
         }
         composable("sign_up_music_genre") {
             SignUpMusicGenreScreen(navController, authManager)

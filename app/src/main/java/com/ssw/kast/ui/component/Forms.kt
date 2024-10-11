@@ -48,7 +48,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -71,7 +70,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -90,7 +88,7 @@ import com.ssw.kast.model.component.PickerElement
 import com.ssw.kast.ui.theme.Grey
 import com.ssw.kast.ui.theme.KastTheme
 import com.ssw.kast.ui.theme.LightGrey
-import com.ssw.kast.ui.theme.montserratFamily
+import com.ssw.kast.ui.theme.notoSans
 import java.util.Date
 import java.util.Locale
 
@@ -288,7 +286,7 @@ fun DropDownList(
                         text = {
                             Text(
                                 text = item.label,
-                                fontFamily = montserratFamily
+                                fontFamily = notoSans
                             )
                         },
                         onClick = {
@@ -435,7 +433,7 @@ fun ImagePickerSample(
                     ) {
                         Text (
                             text = "Add",
-                            fontFamily = montserratFamily
+                            fontFamily = notoSans
                         )
                     }
                 } else {
@@ -454,7 +452,7 @@ fun ImagePickerSample(
                     ) {
                         Text (
                             text = "Remove",
-                            fontFamily = montserratFamily
+                            fontFamily = notoSans
                         )
                     }
                 }
@@ -593,7 +591,7 @@ fun ItemPicker(
                 ) {
                     Text(
                         text = item.label,
-                        fontFamily = montserratFamily,
+                        fontFamily = notoSans,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
@@ -652,7 +650,7 @@ fun OutlineSignButton(
         Text(
             text = label,
             color = labelColor,
-            fontFamily = montserratFamily,
+            fontFamily = notoSans,
             fontSize = 18.sp
         )
     }
@@ -789,7 +787,7 @@ fun PopupDropDownList(
                         text = {
                             Text(
                                 text = item.label,
-                                fontFamily = montserratFamily,
+                                fontFamily = notoSans,
                                 fontSize = 18.sp
                             )
                         },
@@ -849,7 +847,7 @@ fun SignButton(
         Text(
             text = label,
             color = MaterialTheme.colorScheme.onPrimary,
-            fontFamily = montserratFamily,
+            fontFamily = notoSans,
             fontSize = 18.sp
         )
     }

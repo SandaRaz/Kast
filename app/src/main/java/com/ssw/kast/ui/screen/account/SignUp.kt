@@ -105,7 +105,7 @@ fun SignUpScreen(
             usernameInput.value = authUser.username
         }
         if (authUser.usermail.isNotBlank()) {
-            usernameInput.value = authUser.usermail
+            usermailInput.value = authUser.usermail
         }
         val dateOfBirthString = dateToString(authUser.dateOfBirth)
         if (dateOfBirthString.isNotBlank()) {
@@ -175,7 +175,7 @@ fun SignUpScreen(
 
             Text(
                 text = "sign up",
-                fontSize = 36.sp,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.primary
             )

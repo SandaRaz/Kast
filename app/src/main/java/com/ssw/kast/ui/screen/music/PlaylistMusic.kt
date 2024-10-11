@@ -139,7 +139,7 @@ fun PlaylistMusicScreen (
                             scope.launch {
                                 try {
                                     songManager.onSongListChange(playlist.songs)
-                                    songManager.clickNewSong(song, true)
+                                    songManager.clickNewSong(song, loggedUser.id, true)
                                     NavigationManager.navigateTo(navController,"player")
                                 } catch (e: Exception) {
                                     Log.e("Suggestions", "Exception: ${e.message}")
