@@ -72,7 +72,7 @@ val Typography = Typography(
     headlineSmall = TextStyle(
         fontFamily = montserratFamily,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 30.sp
+        fontSize = 28.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

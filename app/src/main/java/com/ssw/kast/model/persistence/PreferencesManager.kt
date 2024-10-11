@@ -3,7 +3,7 @@ package com.ssw.kast.model.persistence
 import android.content.Context
 import android.content.SharedPreferences
 
-class PreferencesManager(context: Context) {
+class PreferencesManager(val context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("KastPrefs", Context.MODE_PRIVATE)
 

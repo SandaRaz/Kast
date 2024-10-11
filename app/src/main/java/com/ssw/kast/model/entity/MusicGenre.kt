@@ -16,17 +16,17 @@ class MusicGenre(
 
             return listMusicGenre
         }
-    }
-}
 
-fun abstractListOfMusicGenre(): List<MusicGenre> {
-    return listOf(
-        MusicGenre("MGR0001", "Alternative"),
-        MusicGenre("MGR0001", "Classic"),
-        MusicGenre("MGR0001", "Electronic"),
-        MusicGenre("MGR0001", "Metal"),
-        MusicGenre("MGR0001", "Pop"),
-        MusicGenre("MGR0001", "Rap"),
-        MusicGenre("MGR0001", "Rock")
-    )
+        fun abstractListOfMusicGenre(): List<MusicGenre> {
+            return listOf(
+                MusicGenre("MGR0001", "Alternative"),
+                MusicGenre("MGR0001", "Classic"),
+                MusicGenre("MGR0001", "Electronic"),
+                MusicGenre("MGR0001", "Metal"),
+                MusicGenre("MGR0001", "Pop"),
+                MusicGenre("MGR0001", "Rap"),
+                MusicGenre("MGR0001", "Rock")
+            )
+        }
+    }
 }
