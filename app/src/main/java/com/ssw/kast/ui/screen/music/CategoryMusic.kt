@@ -148,8 +148,8 @@ fun CategoryMusicScreen (
                                     }
                                 }
                             },
-                            extraIcon = Icons.Outlined.MoreVert,
-                            onClickExtraIcon = {
+                            extraIcon2 = Icons.Outlined.MoreVert,
+                            onClickExtraIcon2 = {
                                 songToAddToPlaylist.value = song
                                 showAddToPlaylistDialog.value = true
                             }

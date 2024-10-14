@@ -11,24 +11,41 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface PlaylistService {
-    @POST("user/playlist/{playlistid}/{songid}")
-    suspend fun addSongToPlaylist(@Path("playlistid") playlistid: Any, @Path("songid") songid: Any): ErrorCatcher
+    @POST("playlist/{playlistid}/{songid}")
+    suspend fun addSongToPlaylist(
+        @Path("playlistid") playlistid: Any,
+        @Path("songid") songid: Any
+    ): ErrorCatcher
 
-    @POST("user/playlist")
+    @POST("playlist")
     suspend fun createPlaylist(@Body playlist: PlaylistDto): ErrorCatcher
 
-    @DELETE("user/playlist/{playlistid}")
+    @DELETE("playlist/{playlistid}")
     suspend fun deletePlaylist(@Path("playlistid") playlistId: Any): ErrorCatcher
 
-    @GET("user/playlist/{playlistid}")
+    @GET("playlist/{playlistid}")
     suspend fun getPlaylist(@Path("playlistid") playlistId: Any): Playlist
 
-    @GET("user/{userid}/playlist")
+    @GET("playlist/user/{userid}")
     suspend fun getPlaylists(@Path("userid") userId: Any): List<Playlist>
 
-    @DELETE("user/playlist/{playlistid}/{songid}")
-    suspend fun removeSongFromPlaylist(@Path("playlistid") playlistId: Any, @Path("songid") songId: Any): ErrorCatcher
+    @DELETE("playlist/{playlistid}/{songid}")
+    suspend fun removeSongFromPlaylist(
+        @Path("playlistid") playlistId: Any,
+        @Path("songid") songId: Any
+    ): ErrorCatcher
 
-    @PUT("user/{userid}/playlist/{playlistid}/{newname}")
-    suspend fun renamePlaylist(@Path("userid") userId: Any, @Path("playlistid") playlistId: Any, @Path("newname") newName: String): ErrorCatcher
+    @PUT("playlist/{userid}/{playlistid}/{newname}")
+    suspend fun renamePlaylist(
+        @Path("userid") userId: Any,
+        @Path("playlistid") playlistId: Any,
+        @Path("newname") newName: String
+    ): ErrorCatcher
+
+    @PUT("playlist/{playlistid}/swap/{song1id}/{song2id}")
+    suspend fun swapPlaylistSongs(
+        @Path("playlistid") playlistId: Any,
+        @Path("song1id") song1Id: Any,
+        @Path("song2id") song2Id: Any
+    ): ErrorCatcher
 }

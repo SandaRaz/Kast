@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material3.Icon
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -780,6 +783,173 @@ fun StartupPopUp(
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SwapPlaylistSongPopup(
+    modifier: Modifier = Modifier,
+    isShowed: MutableState<Boolean>,
+    title: String,
+    onMoveToUpper: () -> Unit,
+    onMoveToLower: () -> Unit,
+    onDismiss: () -> Unit = {},
+    error: @Composable () -> Unit = {}
+) {
+    val cornerShape = RoundedCornerShape(12.dp)
+    val backgroundColor = Color.Black.copy(alpha = 0.75f)
+    val buttonBackground = Color.Black.copy(alpha = 0.95f)
+
+    if (isShowed.value) {
+        Popup (
+            alignment = Alignment.Center,
+            onDismissRequest = {
+                onDismiss()
+                isShowed.value = false
+            }
+        ) {
+            Box (
+                modifier = modifier
+                    .fillMaxWidth(0.85f)
+                    .shadow(
+                        elevation = 12.dp,
+                        shape = cornerShape,
+                        spotColor = Color.White.copy(alpha = 0.4f),
+                        ambientColor = Color.White
+                    )
+                    .border(
+                        width = 3.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = cornerShape
+                    )
+                    .background(
+                        color = backgroundColor,
+                        shape = cornerShape
+                    )
+                    .padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        )
+                        .zIndex(10f),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Close button",
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clickable {
+                                onDismiss()
+                                isShowed.value = false
+                            }
+                    )
+                }
+
+                Column (
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .border(
+                            width = 1.dp,
+                            color = Color.Transparent,
+                        )
+                        .padding(
+                            top = 28.dp,
+                            bottom = 16.dp
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text (
+                        text = title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(16.dp)
+                    )
+
+                    Column (
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
+                    ) {
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = cornerShape
+                                )
+                                .background(
+                                    color = buttonBackground,
+                                    shape = cornerShape
+                                )
+                                .clickable {
+                                    onMoveToUpper()
+                                }
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+                        ) {
+                            Text(
+                                text = "Up",
+                                color = MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Icon(
+                                imageVector = Icons.Filled.ArrowUpward,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
+
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth(0.8f)
+                                .border(
+                                    width = 1.dp,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = cornerShape
+                                )
+                                .background(
+                                    color = buttonBackground,
+                                    shape = cornerShape
+                                )
+                                .clickable {
+                                    onMoveToLower()
+                                }
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
+                        ) {
+                            Text(
+                                text = "Down",
+                                color = MaterialTheme.colorScheme.tertiary,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Icon(
+                                imageVector = Icons.Filled.ArrowDownward,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
+                    }
+
+                    error()
                 }
             }
         }

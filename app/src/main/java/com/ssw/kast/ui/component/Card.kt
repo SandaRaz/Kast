@@ -319,7 +319,9 @@ fun MusicListCard(
     isFavorite: Boolean = false,
     addToFavorite: () -> Unit = {},
     extraIcon: ImageVector? = null,
-    onClickExtraIcon: () -> Unit = {}
+    onClickExtraIcon: () -> Unit = {},
+    extraIcon2: ImageVector? = null,
+    onClickExtraIcon2: () -> Unit = {}
 ) {
     // ------- data -------
 
@@ -353,7 +355,7 @@ fun MusicListCard(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .height(85.dp)
+                .height(82.dp)
                 .border(
                     1.dp,
                     Color.Transparent
@@ -438,6 +440,7 @@ fun MusicListCard(
                     Text(
                         text = song.title,
                         color = MaterialTheme.colorScheme.tertiary,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -451,6 +454,7 @@ fun MusicListCard(
                     Text(
                         text = song.singer,
                         color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.8f),
+                        fontSize = 16.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier
@@ -464,6 +468,7 @@ fun MusicListCard(
                         Text(
                             text = "${song.listeners} listener" + if (song.listeners > 1) "s" else "",
                             color = LightGrey,
+                            fontSize = 14.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
@@ -526,7 +531,7 @@ fun MusicListCard(
                 )
 
                 Icon (
-                    imageVector = Icons.Outlined.MoreVert,
+                    imageVector = it,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier
@@ -537,6 +542,32 @@ fun MusicListCard(
                         )
                         .clickable {
                             onClickExtraIcon()
+                        }
+                )
+            }
+
+            extraIcon2?.let {
+                Spacer (
+                    modifier = Modifier
+                        .width(8.dp)
+                        .fillMaxHeight()
+                        .background(
+                            color = Color.Transparent
+                        )
+                )
+
+                Icon (
+                    imageVector = it,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        )
+                        .clickable {
+                            onClickExtraIcon2()
                         }
                 )
             }

@@ -286,30 +286,35 @@ fun FinalSignUpScreen(
                         scope.launch {
                             Log.d("FinalSignUp", "USER: \n $user")
 
-                            val err = signUpViewModel.signUp(database, accountManager, user)
-                            if (err.code == 0) {
-                                signUpError = ""
+                            try {
+                                val err = signUpViewModel.signUp(database, accountManager, user)
+                                if (err.code == 0) {
+                                    signUpError = ""
 
-                                userViewModel.refreshNewestUsers(
-                                    accountManager = accountManager,
-                                    navController = navController,
-                                    loggedUserId = user.id,
-                                    amount = 5,
-                                    defaultProfilePicture = userDefaultPicture
-                                )
+                                    userViewModel.refreshNewestUsers(
+                                        accountManager = accountManager,
+                                        navController = navController,
+                                        loggedUserId = user.id,
+                                        amount = 5,
+                                        defaultProfilePicture = userDefaultPicture
+                                    )
 
-                                songManager.refreshRecentSong(user.id)
-                                playlistViewModel.refreshUserPlaylists(user.id)
-                                playlistViewModel.refreshPlaylistCards(
-                                    navController = navController,
-                                    amount = 5,
-                                    defaultCover = playlistDefaultCover
-                                )
-                                playlistViewModel.refreshPlaylistPickers(user.id)
+                                    songManager.refreshRecentSong(user.id)
+                                    playlistViewModel.refreshUserPlaylists(user.id)
+                                    playlistViewModel.refreshPlaylistCards(
+                                        navController = navController,
+                                        amount = 5,
+                                        defaultCover = playlistDefaultCover
+                                    )
+                                    playlistViewModel.refreshPlaylistPickers(user.id)
 
-                                NavigationManager.navigateTo(navController,"home")
-                            } else {
-                                signUpError = err.error
+                                    NavigationManager.navigateTo(navController,"home")
+                                } else {
+                                    signUpError = err.error
+                                }
+                            } catch (e: Exception) {
+                                Log.e("SignUp Finalization", "Exception: ${e.message}")
+                                e.printStackTrace()
                             }
                         }
                     }

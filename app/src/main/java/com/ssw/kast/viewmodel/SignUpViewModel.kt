@@ -95,72 +95,77 @@ class SignUpViewModel @Inject constructor(
         confirmPasswordError: MutableState<String>,
         authManager: AuthManager
     ) {
-        this.checkUserInput(usernameInput, usermailInput, dateOfBirthInput)
+        try {
+            this.checkUserInput(usernameInput, usermailInput, dateOfBirthInput)
 
-        var inputError = 0
+            var inputError = 0
 
-        if (usernameInput.isBlank()) {
-            usernameError.value = "Username doesn't have any value"
-            inputError++
-        } else {
-            if (this.usernameError.value.code != 0) {
-                usernameError.value = this.usernameError.value.error
+            if (usernameInput.isBlank()) {
+                usernameError.value = "Username doesn't have any value"
+                inputError++
+            } else {
+                if (this.usernameError.value.code != 0) {
+                    usernameError.value = this.usernameError.value.error
+                    inputError++
+                }
+            }
+
+            if (this.usermailError.value.code != 0) {
+                usermailError.value = this.usermailError.value.error
                 inputError++
             }
-        }
 
-        if (this.usermailError.value.code != 0) {
-            usermailError.value = this.usermailError.value.error
-            inputError++
-        }
+            if (dateOfBirthInput.isBlank()) {
+                dateOfBirthError.value = "Select your date of birth"
+                inputError++
+            } else {
+                if (this.ageError.value.code != 0) {
+                    dateOfBirthError.value = this.ageError.value.error
+                    inputError++
+                }
+            }
 
-        if (dateOfBirthInput.isBlank()) {
-            dateOfBirthError.value = "Select your date of birth"
-            inputError++
-        } else {
-            if (this.ageError.value.code != 0) {
-                dateOfBirthError.value = this.ageError.value.error
+            if (selectedGender.value.value == null) {
+                selectedGenderError.value = "Select your gender"
                 inputError++
             }
-        }
 
-        if (selectedGender.value.value == null) {
-            selectedGenderError.value = "Select your gender"
-            inputError++
-        }
-
-        if (selectedCountry.value.value == null) {
-            selectedCountryError.value = "Select your country"
-            inputError++
-        }
-
-        if (passwordInput.isBlank()) {
-            passwordLengthError.value = "Password must contains at least 6 characters"
-        } else {
-            if (passwordInput != confirmPasswordInput) {
-                confirmPasswordError.value = "Password confirmation error"
+            if (selectedCountry.value.value == null) {
+                selectedCountryError.value = "Select your country"
                 inputError++
             }
-        }
 
-        if (inputError == 0) {
-            val newUser = User()
-            newUser.id = UUID.randomUUID()
-            newUser.username = usernameInput
-            newUser.usermail = usermailInput
-            newUser.passwordHash = passwordInput
-            newUser.dateOfBirth = dateFromString(dateOfBirthInput)
+            if (passwordInput.isBlank()) {
+                passwordLengthError.value = "Password must contains at least 6 characters"
+            } else {
+                if (passwordInput != confirmPasswordInput) {
+                    confirmPasswordError.value = "Password confirmation error"
+                    inputError++
+                }
+            }
 
-            val userGender: Gender = selectedGender.value.value as Gender
-            newUser.genderId = userGender.id
-            newUser.gender = userGender
+            if (inputError == 0) {
+                val newUser = User()
+                newUser.id = UUID.randomUUID()
+                newUser.username = usernameInput
+                newUser.usermail = usermailInput
+                newUser.passwordHash = passwordInput
+                newUser.dateOfBirth = dateFromString(dateOfBirthInput)
 
-            val userCountry: Country = selectedCountry.value.value as Country
-            newUser.countryId = userCountry.id
-            newUser.country = userCountry
+                val userGender: Gender = selectedGender.value.value as Gender
+                newUser.genderId = userGender.id
+                newUser.gender = userGender
 
-            authManager.newUser = newUser
-            navController.navigate("sign_up_music_genre")
+                val userCountry: Country = selectedCountry.value.value as Country
+                newUser.countryId = userCountry.id
+                newUser.country = userCountry
+
+                authManager.newUser = newUser
+                navController.navigate("sign_up_music_genre")
+            }
+        } catch (e: Exception) {
+            Log.e("SingUp", "Exception: ${e.message}")
+            e.printStackTrace()
         }
     }
 

@@ -14,4 +14,5 @@ class PlaylistRepository @Inject constructor(private val playlistService: Playli
     suspend fun getPlaylists(userId: Any): List<Playlist> = playlistService.getPlaylists(userId)
     suspend fun removeSongFromPlaylist(playlistId: Any, songId: Any): ErrorCatcher = playlistService.removeSongFromPlaylist(playlistId, songId)
     suspend fun renamePlaylist(userId: Any, playlistId: Any, newName: String): ErrorCatcher = playlistService.renamePlaylist(userId, playlistId, newName)
+    suspend fun swapPlaylistSongs(playlistId: Any, song1Id: Any, song2Id: Any): ErrorCatcher = playlistService.swapPlaylistSongs(playlistId, song1Id, song2Id)
 }

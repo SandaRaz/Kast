@@ -459,11 +459,12 @@ fun Modifier.customSelectedIndicatorModifier(isSelected: Boolean): Modifier {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaylistNavBar(
     modifier: Modifier = Modifier,
     title: String? = null,
-    titleSize: TextUnit = 22.sp,
+    titleSize: TextUnit = 20.sp,
     titleColor: Color = MaterialTheme.colorScheme.primary,
     iconColor: Color = MaterialTheme.colorScheme.primary,
     underline: Boolean = false,
@@ -505,7 +506,14 @@ fun PlaylistNavBar(
             color = titleColor,
             fontSize = titleSize,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.align(Alignment.Center)
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .basicMarquee(
+                    delayMillis = 7000,
+                    iterations = Int.MAX_VALUE
+                )
         )
 
         Row(
@@ -522,7 +530,7 @@ fun PlaylistNavBar(
                 imageVector = Icons.Outlined.Refresh,
                 tint = MaterialTheme.colorScheme.tertiary,
                 modifier = Modifier
-                    .fillMaxHeight(),
+                    .size(26.dp),
                 onClick = {
                     onClickRefreshButton()
                 }
@@ -538,8 +546,7 @@ fun PlaylistNavBar(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier
-                        .aspectRatio(1f)
-                        .fillMaxHeight()
+                        .size(26.dp)
                         .clickable {
                             onClickExtraIcon()
                         }

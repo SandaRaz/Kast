@@ -44,55 +44,60 @@ class SignInViewModel @Inject constructor(
         playlistDefaultCover: ImageBitmap,
         playlistViewModel: PlaylistViewModel
     ) {
-        var inputError = 0
-        if (userLoginInput.isBlank()) {
-            inputError++
-            credentialError.value = "Fill empty field"
-        }
-        if (passwordInput.isBlank()) {
-            inputError++
-            credentialError.value = "Fill empty field"
-        }
-
-        if (inputError == 0) {
-            val credential = AuthInfo(userLoginInput, passwordInput)
-            credentialError.value = ""
-
-            val validCredential = this.signIn(credential)
-            val signedUser = this.signedUser.value
-
-            if (validCredential) {
-                val userDao = User.getUserDao(signedUser)
-                database.userDao().insert(userDao)
-
-                val tableRow = database.userDao().countUsers()
-                Log.d("SignInViewModel","User table row: $tableRow")
-
-                signedUser.loadBitmapProfilePicture()
-                accountManager.currentUser = signedUser
-
-                userViewModel.refreshNewestUsers(
-                    accountManager = accountManager,
-                    navController = navController,
-                    loggedUserId = signedUser.id,
-                    amount = 5,
-                    defaultProfilePicture = userDefaultPicture
-                )
-
-                songManager.refreshRecentSong(signedUser.id)
-                playlistViewModel.refreshUserPlaylists(signedUser.id)
-                playlistViewModel.refreshPlaylistCards(
-                    navController = navController,
-                    amount = 5,
-                    defaultCover = playlistDefaultCover
-                )
-                playlistViewModel.refreshPlaylistPickers(signedUser.id)
-
-                NavigationManager.navigateTo(navController, "home")
-            } else {
-                Log.e("SignInError", "Error: ${signedUser.errorCatcher.error}")
-                credentialError.value = signedUser.errorCatcher.error
+        try {
+            var inputError = 0
+            if (userLoginInput.isBlank()) {
+                inputError++
+                credentialError.value = "Fill empty field"
             }
+            if (passwordInput.isBlank()) {
+                inputError++
+                credentialError.value = "Fill empty field"
+            }
+
+            if (inputError == 0) {
+                val credential = AuthInfo(userLoginInput, passwordInput)
+                credentialError.value = ""
+
+                val validCredential = this.signIn(credential)
+                val signedUser = this.signedUser.value
+
+                if (validCredential) {
+                    val userDao = User.getUserDao(signedUser)
+                    database.userDao().insert(userDao)
+
+                    val tableRow = database.userDao().countUsers()
+                    Log.d("SignInViewModel","User table row: $tableRow")
+
+                    signedUser.loadBitmapProfilePicture()
+                    accountManager.currentUser = signedUser
+
+                    userViewModel.refreshNewestUsers(
+                        accountManager = accountManager,
+                        navController = navController,
+                        loggedUserId = signedUser.id,
+                        amount = 5,
+                        defaultProfilePicture = userDefaultPicture
+                    )
+
+                    songManager.refreshRecentSong(signedUser.id)
+                    playlistViewModel.refreshUserPlaylists(signedUser.id)
+                    playlistViewModel.refreshPlaylistCards(
+                        navController = navController,
+                        amount = 5,
+                        defaultCover = playlistDefaultCover
+                    )
+                    playlistViewModel.refreshPlaylistPickers(signedUser.id)
+
+                    NavigationManager.navigateTo(navController, "home")
+                } else {
+                    Log.e("SignInError", "Error: ${signedUser.errorCatcher.error}")
+                    credentialError.value = signedUser.errorCatcher.error
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("SignIn", "Exception: ${e.message}")
+            e.printStackTrace()
         }
     }
 

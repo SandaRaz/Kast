@@ -32,6 +32,9 @@ class PlaylistViewModel @Inject constructor(
     private val _playlistError = mutableStateOf(ErrorCatcher())
     val playlistError: State<ErrorCatcher> = _playlistError
 
+    private val _songSwapError = mutableStateOf(ErrorCatcher())
+    val songSwapError: State<ErrorCatcher> = _songSwapError
+
     private val _playlist = mutableStateOf<Playlist?>(null)
     val playlist: State<Playlist?> = _playlist
 
@@ -252,5 +255,13 @@ class PlaylistViewModel @Inject constructor(
             Log.e("PlaylistCards", "Exception: ${e.message}")
             e.printStackTrace()
         }
+    }
+
+    suspend fun moveSongToUpper(playlist: Playlist, songId: Any) {
+        _songSwapError.value = playlist.moveSongToUpper(playlistRepository, songId)
+    }
+
+    suspend fun moveSongToLower(playlist: Playlist, songId: Any) {
+        _songSwapError.value = playlist.moveSongToLower(playlistRepository, songId)
     }
 }

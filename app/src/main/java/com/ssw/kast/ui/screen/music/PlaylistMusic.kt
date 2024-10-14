@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.UnfoldMore
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import com.ssw.kast.ui.component.MusicListCard
 import com.ssw.kast.ui.component.PlaylistNavBar
 import com.ssw.kast.ui.component.RenamePlaylistPopup
 import com.ssw.kast.ui.component.SelectedItemManagement
+import com.ssw.kast.ui.component.SwapPlaylistSongPopup
 import com.ssw.kast.ui.component.YesOrNoPopup
 import com.ssw.kast.ui.screen.NavigationManager
 import com.ssw.kast.viewmodel.PlaylistViewModel
@@ -78,6 +80,10 @@ fun PlaylistMusicScreen (
     var removeSongError by remember { mutableStateOf("") }
 
     val showRenameDialog = remember { mutableStateOf(false) }
+
+    val showSwapPositionDialog = remember { mutableStateOf(false) }
+    var songToMove by remember { mutableStateOf<Song?>(null) }
+    var moveSongPositionError by remember { mutableStateOf("") }
 
     // ------------------------------------------
 
@@ -142,13 +148,18 @@ fun PlaylistMusicScreen (
                                     songManager.clickNewSong(song, loggedUser.id, true)
                                     NavigationManager.navigateTo(navController,"player")
                                 } catch (e: Exception) {
-                                    Log.e("Suggestions", "Exception: ${e.message}")
+                                    Log.e("PlaylistMusic", "Exception: ${e.message}")
                                     e.printStackTrace()
                                 }
                             }
                         },
-                        extraIcon = Icons.Outlined.Delete,
+                        extraIcon = Icons.Outlined.UnfoldMore,
                         onClickExtraIcon = {
+                            songToMove = song
+                            showSwapPositionDialog.value = true
+                        },
+                        extraIcon2 = Icons.Outlined.Delete,
+                        onClickExtraIcon2 = {
                             songToRemove = song
                             showRemoveDialog.value = true
                         }
@@ -192,6 +203,46 @@ fun PlaylistMusicScreen (
                         if (removeSongError.isNotBlank()) {
                             Text (
                                 text = removeSongError,
+                                color = Color.Red
+                            )
+                        }
+                    }
+                )
+            }
+
+            songToMove?.let { it ->
+                SwapPlaylistSongPopup(
+                    isShowed = showSwapPositionDialog,
+                    title = "Move '${it.title}' to:",
+                    onMoveToUpper = {
+                        scope.launch {
+                            playlistViewModel.moveSongToUpper(playlist, it.id)
+                            if (playlistViewModel.songSwapError.value.code != 0) {
+                                moveSongPositionError = playlistViewModel.songSwapError.value.error
+                            } else {
+                                playlistViewModel.loadPlaylist(playlist.id)
+                                playlist = playlistViewModel.playlist.value!!
+                            }
+                        }
+                    },
+                    onMoveToLower = {
+                        scope.launch {
+                            playlistViewModel.moveSongToLower(playlist, it.id)
+                            if (playlistViewModel.songSwapError.value.code != 0) {
+                                moveSongPositionError = playlistViewModel.songSwapError.value.error
+                            } else {
+                                playlistViewModel.loadPlaylist(playlist.id)
+                                playlist = playlistViewModel.playlist.value!!
+                            }
+                        }
+                    },
+                    onDismiss = {
+                        songToMove = null
+                    },
+                    error = {
+                        if (moveSongPositionError.isNotBlank()) {
+                            Text (
+                                text = moveSongPositionError,
                                 color = Color.Red
                             )
                         }
