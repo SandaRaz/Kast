@@ -166,18 +166,17 @@ fun CategoryMusicScreen (
                     userId = loggedUser.id,
                     playlistViewModel = playlistViewModel
                 )
+            } else if (categorySongs.isEmpty()) {
+                Spacer (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        )
+                )
             }
-
-            Spacer (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .weight(1f)
-                    .border(
-                        1.dp,
-                        Color.Transparent
-                    )
-            )
 
             songManager.currentSong?.let {
                 CurrentSongBar(
