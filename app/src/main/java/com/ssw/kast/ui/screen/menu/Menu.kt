@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.outlined.FormatPaint
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.NetworkWifi
 import androidx.compose.material.icons.outlined.PersonOutline
@@ -141,13 +142,13 @@ fun MenuScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
-                    .shadow(
-                        elevation = 8.dp,
-                        shape = RoundedCornerShape(
-                            topStart = cornerShape,
-                            topEnd = cornerShape
-                        )
-                    )
+//                    .shadow(
+//                        elevation = 8.dp,
+//                        shape = RoundedCornerShape(
+//                            topStart = cornerShape,
+//                            topEnd = cornerShape
+//                        )
+//                    )
                     .border(
                         width = 1.dp,
                         color = Color.Transparent,
@@ -257,6 +258,15 @@ fun MenuScreen(
                         NavigationManager.navigateTo(navController,"network")
                     }
                 )
+
+                MenuItem(
+                    icon = Icons.Outlined.FormatPaint,
+                    label = "Theme",
+                    onClick = {
+                        NavigationManager.navigateTo(navController,"theme")
+                    }
+                )
+
                 /*
                 MenuItem(
                     icon = Icons.Outlined.Settings,

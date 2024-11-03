@@ -24,7 +24,7 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = White
 )
 
-private val LightColorScheme = lightColorScheme(
+var LightColorScheme = lightColorScheme(
     primary = Green,
     secondary = LighterGreen,
     tertiary = White,

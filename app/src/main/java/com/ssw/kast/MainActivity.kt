@@ -1,7 +1,9 @@
 package com.ssw.kast
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +30,7 @@ import com.ssw.kast.model.persistence.PreferencesManager
 import com.ssw.kast.ui.component.StartupPopUp
 import com.ssw.kast.ui.screen.AppNavigation
 import com.ssw.kast.ui.theme.KastTheme
+import com.ssw.kast.ui.theme.LightColorScheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -49,6 +52,12 @@ class MainActivity : ComponentActivity() {
 //        ).build()
 
         db = AppDatabase.getDatabase(this.applicationContext)
+        val preferencesManager = PreferencesManager(this.applicationContext)
+        val currentTheme = preferencesManager.getThemeData()
+
+        if (currentTheme != null) {
+            LightColorScheme = currentTheme.toColorScheme()
+        }
 
         enableEdgeToEdge()
         setContent {
@@ -62,8 +71,6 @@ class MainActivity : ComponentActivity() {
                     BottomNavigationBar(navController, selectedItem)
                 }
             // ----- Setup Data and features managers -----
-                val preferencesManager = remember { PreferencesManager(this.applicationContext) }
-
                 val currentSong by remember { mutableStateOf<Song?>(null) }
                 val songManager = SongManager(
                     db,
@@ -99,12 +106,12 @@ class MainActivity : ComponentActivity() {
 
     companion object {
         fun restartMainActivity(context: Context) {
-            val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-            intent?.let {
-                it.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(it)
-                Runtime.getRuntime().exit(0)
-            }
+            val packageManager: PackageManager = context.packageManager
+            val intent: Intent = packageManager.getLaunchIntentForPackage(context.packageName)!!
+            val componentName: ComponentName = intent.component!!
+            val restartIntent: Intent = Intent.makeRestartActivityTask(componentName)
+            context.startActivity(restartIntent)
+            Runtime.getRuntime().exit(0)
         }
 
         fun exit() {

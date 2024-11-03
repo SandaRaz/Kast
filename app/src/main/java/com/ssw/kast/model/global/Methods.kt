@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -26,6 +27,7 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.io.ByteArrayOutputStream
 import java.io.InputStreamReader
 import java.util.Locale
+import kotlin.experimental.and
 
 // ------------- Image methods -----------------
 
@@ -177,3 +179,15 @@ fun dateToString(date: LocalDate): String {
 }
 
 // ------------ End date functions -------------
+
+// -------------- Color functions --------------
+
+fun Color.toLong(): Long {
+    return (this.value.toByte() and 0xFFFFFFF.toByte()).toLong()
+}
+
+fun Long.toColor(): Color {
+    return Color(this)
+}
+
+// ---------------------------------------------

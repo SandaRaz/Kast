@@ -29,8 +29,11 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import com.ssw.kast.R
+import com.ssw.kast.model.component.ThemeModel
 import com.ssw.kast.model.manager.SongManager
 import com.ssw.kast.model.entity.Song
 import com.ssw.kast.model.global.getCachedImageFromResources
@@ -204,8 +208,8 @@ fun MusicCard(
                 shape = RoundedCornerShape(cornerRound)
             )
             .border(
-                width = 0.dp,
-                color = Darker,
+                width = 1.dp,
+                color = Color.Transparent,
                 shape = RoundedCornerShape(cornerRound)
             )
             .padding(0.dp)
@@ -589,9 +593,9 @@ fun MusicListCard(
 fun SimpleCard(
     modifier: Modifier = Modifier,
     label: String,
-    labelColor: Color = MaterialTheme.colorScheme.tertiary,
+    labelColor: Color = MaterialTheme.colorScheme.onSurface,
     description: String?,
-    descriptionColor: Color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
+    descriptionColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
     icon: ImageVector? = null,
     iconTint: Color = MaterialTheme.colorScheme.tertiary,
     shape: Shape = RectangleShape,
@@ -697,8 +701,8 @@ fun SmallCard(
                 shape = RoundedCornerShape(cornerRound)
             )
             .border(
-                width = 0.dp,
-                color = Darker,
+                width = 1.dp,
+                color = Color.Transparent,
                 shape = RoundedCornerShape(cornerRound)
             )
             .clickable {
@@ -712,13 +716,12 @@ fun SmallCard(
             contentScale = ContentScale.FillWidth,
             contentDescription = null,
             modifier = Modifier
-//                .size(48.dp)
                 .clip(CircleShape)
                 .fillMaxHeight(0.6f)
                 .aspectRatio(1f)
                 .border(
                     width = 2.dp,
-                    color = Grey,
+                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
                     shape = CircleShape
                 )
         )
@@ -732,17 +735,143 @@ fun SmallCard(
                 text = primaryLabel,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = White,
+                color = MaterialTheme.colorScheme.tertiary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
             Text (
                 text = secondaryLabel,
                 style = MaterialTheme.typography.bodyMedium,
-                color = LightGrey,
+                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
     }
+}
+
+@Composable
+fun ThemeCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    themeColors: ThemeModel,
+    checked: Boolean,
+    onChecked: (Boolean) -> Unit
+) {
+    val cornerShapeValue = 12.dp
+    val cornerShape = RoundedCornerShape(cornerShapeValue)
+
+    Row (
+        modifier = modifier
+            .fillMaxWidth()
+            .height(80.dp)
+            .border(
+                width = 2.dp,
+                color = themeColors.surface,
+                shape = cornerShape
+            )
+            .background(
+                color = themeColors.background,
+                shape = cornerShape
+            )
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text (
+            text = title,
+            color = themeColors.primary
+        )
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .border(
+                    1.dp,
+                    Color.Transparent
+                )
+        )
+
+        Row (
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f)
+                .border(
+                    width = 1.dp,
+                    color = Color.Transparent
+                ),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(
+                        color = themeColors.primary
+                    )
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(
+                        color = themeColors.secondary
+                    )
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(
+                        color = themeColors.tertiary
+                    )
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(
+                        color = themeColors.background
+                    )
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .background(
+                        color = themeColors.surface
+                    )
+            )
+        }
+
+        Spacer(
+            modifier = Modifier
+                .width(32.dp)
+                .border(
+                    1.dp,
+                    Color.Transparent
+                )
+        )
+
+        Switch (
+            checked = checked,
+            onCheckedChange = {
+                onChecked(it)
+            },
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+                checkedTrackColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                checkedBorderColor = MaterialTheme.colorScheme.primary
+            )
+        )
+    }
+
+    Spacer(
+        modifier = Modifier.height(16.dp)
+    )
 }

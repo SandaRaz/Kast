@@ -52,6 +52,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -103,6 +104,8 @@ fun BackNavBar(
     extraIconColor: Color = MaterialTheme.colorScheme.tertiary,
     onClickExtraIcon: () -> Unit = {}
 ) {
+    val iconCornerShape = 8.dp
+
     // ------------- Data --------------
 
     val horizontalArrangement = if (extraIcon == null) {
@@ -131,7 +134,8 @@ fun BackNavBar(
                 .aspectRatio(1f)
                 .border(
                     1.dp,
-                    Color.Transparent
+                    Color.Transparent,
+                    shape = RoundedCornerShape(iconCornerShape)
                 )
                 .clickable {
                     onPressBackButton()
@@ -204,15 +208,22 @@ fun BottomNavigationBar(navController: NavHostController, selectedItem: Selected
                 brush = Brush.verticalGradient(
                     colors = listOf(
 //                        Color.Transparent,
+                        Color.Black.copy(alpha = 0.2f),
+                        Color.Black.copy(alpha = 0.25f),
+                        Color.Black.copy(alpha = 0.3f),
+                        Color.Black.copy(alpha = 0.35f),
                         Color.Black.copy(alpha = 0.4f),
+                        Color.Black.copy(alpha = 0.45f),
                         Color.Black.copy(alpha = 0.5f),
+                        Color.Black.copy(alpha = 0.55f),
                         Color.Black.copy(alpha = 0.6f),
+                        Color.Black.copy(alpha = 0.65f),
+                        Color.Black.copy(alpha = 0.7f),
                         Color.Black.copy(alpha = 0.75f),
                         Color.Black.copy(alpha = 0.8f),
                         Color.Black.copy(alpha = 0.85f),
                         Color.Black.copy(alpha = 0.9f),
                         Color.Black.copy(alpha = 0.95f),
-                        Color.Black.copy(alpha = 1f),
                         Color.Black
                     )
                 )
@@ -222,7 +233,7 @@ fun BottomNavigationBar(navController: NavHostController, selectedItem: Selected
             containerColor = Color.Transparent,
             tonalElevation = 0.dp
         ) {
-            val selectedIconColor = Color.Black
+            val selectedIconColor = MaterialTheme.colorScheme.onPrimary
             val selectedIndicatorColor = MaterialTheme.colorScheme.primary
             val unselectedIconColor = MaterialTheme.colorScheme.tertiary
 
@@ -655,7 +666,7 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Outlined.Search,
                 contentDescription = "Search button",
-                tint = MaterialTheme.colorScheme.secondary,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .border(
                         width = 1.dp,

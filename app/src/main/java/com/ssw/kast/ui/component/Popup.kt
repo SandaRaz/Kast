@@ -696,6 +696,8 @@ fun SignOutPopup(
 
                     OutlineSignButton (
                         label = "No",
+                        labelColor = MaterialTheme.colorScheme.tertiary,
+                        lineColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
                         onClick = {
                             isShowed.value = false
                         }
@@ -1022,6 +1024,8 @@ fun YesOrNoPopup(
 
                     OutlineSignButton (
                         label = "No",
+                        labelColor = MaterialTheme.colorScheme.tertiary,
+                        lineColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f),
                         onClick = {
                             onClickNo()
                             isShowed.value = false

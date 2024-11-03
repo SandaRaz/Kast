@@ -349,6 +349,38 @@ fun SignInScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
+                        text = "Theme",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textDecoration = TextDecoration.Underline,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .clickable{
+                                NavigationManager.navigateTo(navController,"theme")
+                            }
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(16.dp)
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        )
+                )
+
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(
+                            1.dp,
+                            Color.Transparent
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
                         text = "About",
                         color = MaterialTheme.colorScheme.onBackground,
                         textDecoration = TextDecoration.Underline,

@@ -28,6 +28,7 @@ fun MenuItem(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     label: String,
+    textColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     containerShape: Shape = RoundedCornerShape(12.dp),
     onClick: () -> Unit = {}
@@ -71,7 +72,7 @@ fun MenuItem(
             )
             Text(
                 text = label,
-                color = MaterialTheme.colorScheme.tertiary,
+                color = textColor,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 16.sp
             )

@@ -629,7 +629,7 @@ fun OutlineSignButton(
     modifier: Modifier = Modifier,
     label: String = "Button",
     labelColor: Color = MaterialTheme.colorScheme.primary,
-    lineColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+    lineColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
     shape: Shape = RoundedCornerShape(12.dp),
     onClick: () -> Unit
 ) {
@@ -830,14 +830,14 @@ fun SignButton(
         shape = shape,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            contentColor = MaterialTheme.colorScheme.tertiary
         ),
         modifier = modifier
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f),
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
                         MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                     )
                 ),

@@ -187,10 +187,9 @@ fun LogoHeader(
     ) {
         Box(
             modifier = Modifier
-                .shadow(
-                    elevation = 16.dp,
-                    ambientColor = MaterialTheme.colorScheme.secondary,
-                    spotColor = MaterialTheme.colorScheme.secondary
+                .border(
+                    1.dp,
+                    Color.Transparent
                 )
         ) {
             Row (

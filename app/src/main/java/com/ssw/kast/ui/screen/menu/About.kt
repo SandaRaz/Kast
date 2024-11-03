@@ -236,7 +236,8 @@ fun AboutScreen(
                         append(". \n")
                         append("All audio content and logos are the property of their respective owners. If you believe " +
                                 "any content is infringing on your copyright, please contact me at the email above.")
-                    }
+                    },
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
         }

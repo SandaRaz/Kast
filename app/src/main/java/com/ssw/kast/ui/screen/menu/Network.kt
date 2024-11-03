@@ -30,11 +30,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ssw.kast.MainActivity
 import com.ssw.kast.model.persistence.PreferencesManager
 import com.ssw.kast.ui.component.BackNavBar
 import com.ssw.kast.ui.component.SelectedItemManagement
 import com.ssw.kast.ui.component.SignButton
 import com.ssw.kast.ui.component.SignTextField
+import com.ssw.kast.ui.component.YesOrNoPopup
 import com.ssw.kast.ui.screen.NavigationManager
 import com.ssw.kast.ui.theme.KastTheme
 
@@ -44,6 +46,22 @@ fun NetworkScreen (
     selectedItem: SelectedItemManagement,
     preferencesManager: PreferencesManager
 ) {
+    // ------ retrieving data from SharedPreferences ------
+
+    val savedProtocol = preferencesManager.getStringData("protocol", "http")
+    val savedIpAddress = preferencesManager.getStringData("ipAddress", "192.168.137.1")
+    val savedPort = preferencesManager.getStringData("port", "5039")
+
+    var protocol by remember { mutableStateOf(savedProtocol) }
+    var ipAddress by remember { mutableStateOf(savedIpAddress) }
+    var port by remember { mutableStateOf(savedPort) }
+
+    val context = LocalContext.current
+    val showRestartPopup = remember { mutableStateOf(false) }
+
+    // ----------------------------------------------------
+
+
     Scaffold (
         modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
     ) { innerPadding ->
@@ -60,16 +78,6 @@ fun NetworkScreen (
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // ------ retrieving data from SharedPreferences ------
-            val savedProtocol = preferencesManager.getStringData("protocol", "http")
-            val savedIpAddress = preferencesManager.getStringData("ipAddress", "192.168.137.1")
-            val savedPort = preferencesManager.getStringData("port", "5039")
-
-            var protocol by remember { mutableStateOf(savedProtocol) }
-            var ipAddress by remember { mutableStateOf(savedIpAddress) }
-            var port by remember { mutableStateOf(savedPort) }
-            // ----------------------------------------------------
-
             BackNavBar(
                 title = "Network Setting",
                 onPressBackButton = {
@@ -159,6 +167,16 @@ fun NetworkScreen (
                         preferencesManager.saveStringData("ipAddress", ipAddress)
                         preferencesManager.saveStringData("port", port)
                         Log.d("NetworkScreen", "Saved protocol $protocol ipAddress $ipAddress and port $port")
+
+                        showRestartPopup.value = true
+                    }
+                )
+
+                YesOrNoPopup(
+                    isShowed = showRestartPopup,
+                    title = "Restart app now to apply network changes ?",
+                    onClickYes = {
+                        MainActivity.restartMainActivity(context)
                     }
                 )
 

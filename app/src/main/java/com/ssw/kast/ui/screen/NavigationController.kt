@@ -24,6 +24,7 @@ import com.ssw.kast.ui.screen.feed.HomeScreen
 import com.ssw.kast.ui.screen.menu.AboutScreen
 import com.ssw.kast.ui.screen.menu.MenuScreen
 import com.ssw.kast.ui.screen.menu.NetworkScreen
+import com.ssw.kast.ui.screen.menu.SelectThemeScreen
 import com.ssw.kast.ui.screen.music.CategoriesScreen
 import com.ssw.kast.ui.screen.music.CategoryMusicScreen
 import com.ssw.kast.ui.screen.music.MusicScreen
@@ -137,6 +138,9 @@ fun AppNavigation(
         composable("suggestion") {
             selectedItem.onSelectItem("music")
             SuggestionsScreen(navController, selectedItem, accountManager, songManager, songViewModel, playlistViewModel)
+        }
+        composable("theme") {
+            SelectThemeScreen(navController, selectedItem, preferencesManager)
         }
     }
 }

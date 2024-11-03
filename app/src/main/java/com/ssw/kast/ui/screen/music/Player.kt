@@ -132,7 +132,7 @@ fun PlayerScreen(
                 )
         ) {
             val cornerShape = 16.dp
-            val backgroundAlphaLevel = 0.6f
+            val backgroundAlphaLevel = 0.65f
 
             LegacyBlurImage(
                 imageBitmap = songManager.currentSong?.getCover(defaultSongCover)!!,
@@ -268,7 +268,7 @@ fun PlayerScreen(
                                 Spacer(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(16.dp)
+                                        .height(8.dp)
                                         .background(
                                             Color.Transparent
                                         )
